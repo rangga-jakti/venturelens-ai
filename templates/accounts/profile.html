@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Profile" %} — VentureLens AI{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-6 py-16 animate-fade-in">
+
+    <div class="flex items-center gap-5 mb-10">
+        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-500 to-purple-600 flex items-center justify-center font-display text-2xl font-700 text-white">
+            {{ user.avatar_initial }}
+        </div>
+        <div>
+            <h1 class="font-display text-2xl font-700 text-white">{{ user.display_name }}</h1>
+            <p class="text-white/40 text-sm">{{ user.email }}</p>
+            <span class="inline-block mt-1 text-xs font-mono px-2 py-0.5 rounded-full
+                {% if user.plan == 'pro' %}bg-brand-500/20 text-brand-400 border border-brand-500/30
+                {% else %}bg-white/5 text-white/30 border border-white/10{% endif %}">
+                {{ user.plan|upper }} Plan
+            </span>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+
+        <div class="glass-card rounded-2xl p-6 border border-white/10">
+            <h3 class="font-display font-600 text-white mb-5">{% trans "Usage Stats" %}</h3>
+            <div class="space-y-4">
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-white/40">{% trans "Total Analyses" %}</span>
+                    <span class="font-display font-700 text-white text-xl">{{ user.total_analyses }}</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-white/40">{% trans "Today" %}</span>
+                    <span class="font-mono text-white/70">{{ user.analyses_today }} / {{ user.daily_limit }}</span>
+                </div>
+                <div class="w-full bg-white/5 rounded-full h-1.5">
+                    <div class="bg-brand-500 h-1.5 rounded-full transition-all"
+                         style="width: calc({{ user.analyses_today }} / {{ user.daily_limit }} * 100%)"></div>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-white/40">{% trans "Member since" %}</span>
+                    <span class="text-sm text-white/50 font-mono">{{ user.created_at|date:"M Y" }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card rounded-2xl p-6 border border-white/10">
+            <h3 class="font-display font-600 text-white mb-5">{% trans "Preferences" %}</h3>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-4">
+                    <label class="block text-sm text-white/50 mb-2">{% trans "Full Name" %}</label>
+                    <input type="text" name="full_name" value="{{ user.full_name }}"
+                        class="auth-input w-full" placeholder="{% trans 'Your name' %}">
+                </div>
+                <div class="mb-5">
+                    <label class="block text-sm text-white/50 mb-2">{% trans "Language" %}</label>
+                    <select name="language" class="auth-input w-full">
+                        <option value="en" {% if user.language == 'en' %}selected{% endif %}>🇺🇸 English</option>
+                        <option value="id" {% if user.language == 'id' %}selected{% endif %}>🇮🇩 Bahasa Indonesia</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary w-full py-2.5 text-sm">{% trans "Save Changes" %}</button>
+            </form>
+        </div>
+    </div>
+
+    {% if recent_analyses %}
+    <div class="glass-card rounded-2xl p-6 border border-white/10">
+        <h3 class="font-display font-600 text-white mb-5">{% trans "Recent Analyses" %}</h3>
+        <div class="space-y-3">
+            {% for item in recent_analyses %}
+            <a href="{% url 'dashboard:results' pk=item.pk %}"
+               class="flex items-center gap-4 p-3 rounded-xl bg-white/3 hover:bg-white/5 border border-white/5 hover:border-white/10 transition-all group">
+                <div class="w-10 h-10 rounded-lg bg-brand-500/15 flex items-center justify-center font-display font-700 text-brand-400 text-sm flex-shrink-0">
+                    {% if item.viability_score %}{{ item.viability_score.overall_score }}{% else %}—{% endif %}
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm text-white/70 truncate">{{ item.startup_idea|truncatechars:70 }}</p>
+                    <p class="text-xs text-white/25 font-mono mt-0.5">{{ item.created_at|date:"M d, Y · H:i" }}</p>
+                </div>
+                <svg class="w-4 h-4 text-white/20 group-hover:text-white/40 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="mt-6 text-center">
+        <form method="POST" action="{% url 'accounts:logout' %}" class="inline">
+            {% csrf_token %}
+            <button type="submit" class="text-sm text-white/30 hover:text-red-400 transition-colors">
+                {% trans "Sign out of VentureLens" %}
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

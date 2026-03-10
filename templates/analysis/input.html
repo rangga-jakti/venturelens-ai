@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Analyze Your Startup" %} — VentureLens AI{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center py-20 px-6">
+    <div class="w-full max-w-2xl animate-slide-up">
+
+        <div class="text-center mb-10">
+            <div class="inline-flex items-center gap-2 text-xs font-mono text-brand-400 bg-brand-500/10 border border-brand-500/20 rounded-full px-3 py-1.5 mb-6">
+                <span class="w-1.5 h-1.5 bg-brand-400 rounded-full animate-pulse"></span>
+                {% trans "AI Engine Ready" %}
+            </div>
+            <h1 class="font-display text-4xl md:text-5xl font-700 text-white mb-4">
+                {% trans "What's Your" %}<br>
+                <span class="text-brand-400">{% trans "Startup Idea?" %}</span>
+            </h1>
+            <p class="text-white/40 text-lg max-w-md mx-auto">
+                {% trans "Describe it in your own words. Be specific about the problem, solution, and target market." %}
+            </p>
+        </div>
+
+        <div class="glass-card rounded-2xl p-8 border border-white/10" x-data="ideaForm()">
+            <form method="POST" action="" @submit="handleSubmit($event)" id="analysis-form">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                <div class="bg-red-500/10 border border-red-500/30 rounded-xl p-4 mb-6">
+                    {% for error in form.non_field_errors %}
+                    <p class="text-red-400 text-sm">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <div class="mb-6">
+                    <label class="block text-sm font-500 text-white/70 mb-3">
+                        {% trans "Your Startup Idea" %}
+                        <span class="text-white/30 font-400 ml-2">— {% trans "be as detailed as possible" %}</span>
+                    </label>
+                    <div class="relative">
+                        <textarea name="startup_idea" id="id_startup_idea" rows="7"
+                            placeholder="{% trans 'Example: An AI-powered personal finance app for Gen Z that analyzes spending habits, predicts cash flow shortfalls, and provides micro-savings recommendations through a gamified interface...' %}"
+                            class="w-full bg-white/5 border {% if form.startup_idea.errors %}border-red-500/50{% else %}border-white/10{% endif %} rounded-xl px-5 py-4 text-white placeholder-white/20 focus:outline-none focus:border-brand-500/50 focus:bg-white/8 transition-all duration-200 resize-none text-sm leading-relaxed font-body"
+                            x-model="ideaText" @input="updateCount" maxlength="2000" required
+                        >{% if form.startup_idea.value %}{{ form.startup_idea.value }}{% endif %}</textarea>
+                        <div class="absolute bottom-3 right-4 text-xs font-mono text-white/20" x-text="charCount + ' / 2000'"></div>
+                    </div>
+                    {% if form.startup_idea.errors %}
+                    <p class="mt-2 text-sm text-red-400">{{ form.startup_idea.errors.0 }}</p>
+                    {% endif %}
+                    <div class="mt-3 flex items-center gap-2" x-show="ideaText.length > 0">
+                        <div class="flex-1 h-1 bg-white/5 rounded-full overflow-hidden">
+                            <div class="h-full rounded-full transition-all duration-500" :class="qualityColor" :style="'width: ' + qualityPercent + '%'"></div>
+                        </div>
+                        <span class="text-xs font-mono text-white/40" x-text="qualityLabel"></span>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <p class="text-xs text-white/30 mb-3 uppercase tracking-widest">{% trans "Try an example" %}</p>
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" @click="setExample('A SaaS platform that uses AI to automate financial reporting for small businesses, reducing month-end close from days to hours through intelligent data extraction and anomaly detection.')" class="example-chip">FinTech AI</button>
+                        <button type="button" @click="setExample('A marketplace connecting freelance personal trainers with clients who want on-demand, location-flexible fitness sessions, with AI-powered workout planning and progress tracking.')" class="example-chip">FitTech</button>
+                        <button type="button" @click="setExample('An AI-powered mental health app for remote workers that detects burnout signals through work patterns and biometric data, providing personalized micro-interventions and connecting users to therapists.')" class="example-chip">Mental Health AI</button>
+                    </div>
+                </div>
+
+                <div class="bg-white/3 rounded-xl p-4 mb-6 border border-white/5">
+                    <p class="text-xs text-white/40 uppercase tracking-widest mb-3">{% trans "Your analysis will include" %}</p>
+                    <div class="grid grid-cols-2 gap-2">
+                        {% for item in analysis_features %}
+                        <div class="flex items-center gap-2 text-sm text-white/50">
+                            <span class="w-1.5 h-1.5 bg-brand-500 rounded-full flex-shrink-0"></span>
+                            {% trans item %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full btn-primary py-4 text-base font-600"
+                    :disabled="isSubmitting" :class="isSubmitting ? 'opacity-80 cursor-not-allowed' : ''">
+                    <span x-show="!isSubmitting" class="flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                        {% trans "Analyze with AI" %}
+                    </span>
+                    <span x-show="isSubmitting" class="flex items-center justify-center gap-3">
+                        <svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                        </svg>
+                        <span x-text="loadingMessage"></span>
+                    </span>
+                </button>
+
+                <p class="text-center text-xs text-white/20 mt-4">
+                    {% trans "Analysis typically takes 20–40 seconds · Up to" %} {{ request.user.daily_limit }} {% trans "analyses per day" %}
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function ideaForm() {
+    return {
+        ideaText: '',
+        charCount: 0,
+        isSubmitting: false,
+        loadingMessages: [
+            '{% trans "Initializing AI engine..." %}',
+            '{% trans "Analyzing market demand..." %}',
+            '{% trans "Scanning competitors..." %}',
+            '{% trans "Calculating viability score..." %}',
+            '{% trans "Fetching trend data..." %}',
+            '{% trans "Generating insights..." %}',
+        ],
+        loadingMessage: '{% trans "Analyzing with AI..." %}',
+        updateCount() { this.charCount = this.ideaText.length; },
+        get qualityPercent() {
+            const len = this.ideaText.length;
+            if (len < 50) return Math.round(len / 50 * 25);
+            if (len < 150) return 25 + Math.round((len - 50) / 100 * 25);
+            if (len < 400) return 50 + Math.round((len - 150) / 250 * 30);
+            return Math.min(100, 80 + Math.round((len - 400) / 400 * 20));
+        },
+        get qualityLabel() {
+            const p = this.qualityPercent;
+            if (p < 25) return '{% trans "Too brief" %}';
+            if (p < 50) return '{% trans "Getting there" %}';
+            if (p < 75) return '{% trans "Good detail" %}';
+            return '{% trans "Excellent" %}';
+        },
+        get qualityColor() {
+            const p = this.qualityPercent;
+            if (p < 25) return 'bg-red-500';
+            if (p < 50) return 'bg-yellow-500';
+            if (p < 75) return 'bg-blue-500';
+            return 'bg-emerald-500';
+        },
+        setExample(text) {
+            this.ideaText = text;
+            this.charCount = text.length;
+            document.getElementById('id_startup_idea').value = text;
+        },
+        handleSubmit(event) {
+            if (this.ideaText.trim().length < 20) return;
+            this.isSubmitting = true;
+            this.loadingMessage = this.loadingMessages[0];
+            let i = 1;
+            const interval = setInterval(() => {
+                if (i < this.loadingMessages.length) this.loadingMessage = this.loadingMessages[i++];
+                else clearInterval(interval);
+            }, 4000);
+        }
+    }
+}
+</script>
+{% endblock %}

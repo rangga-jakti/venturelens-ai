@@ -1,0 +1,476 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{{ analysis.startup_idea|truncatechars:50 }} — VentureLens AI{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto px-6 py-10 animate-fade-in">
+
+    <!-- ── Page Header ─────────────────────────────────────────── -->
+    <div class="mb-10 pb-8 border-b border-white/5">
+        <div class="flex items-start justify-between flex-wrap gap-4">
+            <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-3">
+                    <a href="{% url 'dashboard:history' %}" class="text-white/20 hover:text-white/50 transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                    </a>
+                    <span class="text-xs font-mono text-white/20">{% trans "Analysis Report" %}</span>
+                    {% if analysis.industry %}
+                    <span class="text-white/10">·</span>
+                    <span class="text-xs font-mono text-brand-400/70 bg-brand-500/10 px-2 py-0.5 rounded-md border border-brand-500/15">{{ analysis.industry }}</span>
+                    {% endif %}
+                </div>
+                <h1 class="font-display text-xl md:text-2xl font-600 text-white leading-snug max-w-3xl">
+                    "{{ analysis.startup_idea|truncatechars:140 }}"
+                </h1>
+            </div>
+            <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="text-xs font-mono text-white/20 bg-white/4 border border-white/6 px-3 py-1.5 rounded-lg">
+                    {{ analysis.processing_time_seconds|floatformat:0 }}s
+                </span>
+                <a href="{% url 'analysis:input' %}" class="btn-primary text-sm px-4 py-2">
+                    + {% trans "New Analysis" %}
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── ROW 1: Score + Radar ────────────────────────────────── -->
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-5 mb-5">
+
+        <!-- Viability Score -->
+        {% if score %}
+        <div class="lg:col-span-2 card-elevated p-7 flex flex-col items-center justify-center text-center relative">
+            <div class="absolute inset-0 bg-gradient-to-br from-brand-500/4 via-transparent to-purple-600/4 rounded-[20px] pointer-events-none"></div>
+
+            <div class="section-label w-full justify-center mb-5">{% trans "Viability Score" %}</div>
+
+            <!-- Score Ring -->
+            <div class="relative w-40 h-40 mb-6">
+                <!-- Outer glow -->
+                <div class="absolute inset-0 rounded-full opacity-20 blur-xl"
+                     style="background: radial-gradient(circle, {% if score.score_color == 'emerald' %}#10b981{% elif score.score_color == 'blue' %}#6366f1{% elif score.score_color == 'yellow' %}#f59e0b{% else %}#ef4444{% endif %}, transparent)"></div>
+                <svg class="w-full h-full -rotate-90" viewBox="0 0 160 160">
+                    <circle cx="80" cy="80" r="68" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="8"/>
+                    <circle cx="80" cy="80" r="68" fill="none"
+                        stroke="url(#scoreGrad)"
+                        stroke-width="8"
+                        stroke-linecap="round"
+                        id="scoreArc"/>
+                    <defs>
+                        <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#6366f1"/>
+                            <stop offset="100%" stop-color="#a855f7"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                    <span class="font-display text-5xl font-800 text-white leading-none" id="scoreNumber">0</span>
+                    <span class="text-xs text-white/30 font-mono mt-1">/100</span>
+                </div>
+            </div>
+
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-600 mb-4
+                {% if score.score_color == 'emerald' %}bg-emerald-500/10 text-emerald-400 border border-emerald-500/20
+                {% elif score.score_color == 'blue' %}bg-blue-500/10 text-blue-400 border border-blue-500/20
+                {% elif score.score_color == 'yellow' %}bg-yellow-500/10 text-yellow-400 border border-yellow-500/20
+                {% elif score.score_color == 'orange' %}bg-orange-500/10 text-orange-400 border border-orange-500/20
+                {% else %}bg-red-500/10 text-red-400 border border-red-500/20{% endif %}">
+                <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
+                {{ score.score_label }}
+            </div>
+
+            <p class="text-xs text-white/30 leading-relaxed max-w-[220px]">{{ score.score_rationale|truncatechars:130 }}</p>
+        </div>
+        {% endif %}
+
+        <!-- Radar Chart -->
+        <div class="lg:col-span-3 card-elevated p-6">
+            <div class="dash-section-header">
+                <h3>{% trans "Dimension Breakdown" %}</h3>
+                <span class="text-xs font-mono text-white/20">7 metrics</span>
+            </div>
+            <div class="relative h-64 md:h-72">
+                <canvas id="radarChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── ROW 2: Problem / Value / Scalability ────────────────── -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
+        <div class="insight-card">
+            <div class="insight-card-icon bg-red-500/10 text-red-400 border border-red-500/15">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            </div>
+            <div class="insight-card-title">{% trans "Problem Statement" %}</div>
+            <p class="insight-card-body">{{ analysis.problem_statement }}</p>
+        </div>
+
+        <div class="insight-card">
+            <div class="insight-card-icon bg-brand-500/10 text-brand-400 border border-brand-500/15">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
+            <div class="insight-card-title">{% trans "Value Proposition" %}</div>
+            <p class="insight-card-body">{{ analysis.value_proposition }}</p>
+        </div>
+
+        <div class="insight-card">
+            <div class="insight-card-icon bg-emerald-500/10 text-emerald-400 border border-emerald-500/15">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+            </div>
+            <div class="insight-card-title">{% trans "Scalability Potential" %}</div>
+            <p class="insight-card-body">{{ analysis.scalability_analysis }}</p>
+        </div>
+    </div>
+
+    <!-- ── ROW 3: Market Trend Chart ──────────────────────────── -->
+    <div class="card-elevated p-6 mb-5" x-data="trendChartWidget('{{ analysis.pk }}')">
+        <div class="flex items-center justify-between mb-5">
+            <div class="dash-section-header flex-1 mb-0">
+                <h3>{% trans "Market Trend Analysis" %}</h3>
+            </div>
+            <div class="flex items-center gap-2 ml-4 flex-shrink-0">
+                <!-- Time filter buttons -->
+                <div class="flex items-center gap-1 bg-white/3 border border-white/6 rounded-lg p-1">
+                    <button @click="switchTimeframe('1M')" :class="activeTimeframe==='1M' ? 'bg-brand-500/20 text-brand-400 border border-brand-500/25' : 'text-white/25 hover:text-white/50 border border-transparent'" class="text-xs font-mono px-2.5 py-1 rounded-md transition-all duration-150">1M</button>
+                    <button @click="switchTimeframe('3M')" :class="activeTimeframe==='3M' ? 'bg-brand-500/20 text-brand-400 border border-brand-500/25' : 'text-white/25 hover:text-white/50 border border-transparent'" class="text-xs font-mono px-2.5 py-1 rounded-md transition-all duration-150">3M</button>
+                    <button @click="switchTimeframe('12M')" :class="activeTimeframe==='12M' ? 'bg-brand-500/20 text-brand-400 border border-brand-500/25' : 'text-white/25 hover:text-white/50 border border-transparent'" class="text-xs font-mono px-2.5 py-1 rounded-md transition-all duration-150">12M</button>
+                    <button @click="switchTimeframe('5Y')" :class="activeTimeframe==='5Y' ? 'bg-brand-500/20 text-brand-400 border border-brand-500/25' : 'text-white/25 hover:text-white/50 border border-transparent'" class="text-xs font-mono px-2.5 py-1 rounded-md transition-all duration-150">5Y</button>
+                    <button @click="switchTimeframe('10Y')" :class="activeTimeframe==='10Y' ? 'bg-brand-500/20 text-brand-400 border border-brand-500/25' : 'text-white/25 hover:text-white/50 border border-transparent'" class="text-xs font-mono px-2.5 py-1 rounded-md transition-all duration-150">10Y</button>
+                </div>
+                <span x-show="isMock" class="text-xs font-mono text-yellow-400 bg-yellow-500/8 border border-yellow-500/15 px-2.5 py-1 rounded-lg">Simulated</span>
+                <span x-show="isLoading" class="text-xs font-mono text-white/20 animate-pulse">Loading...</span>
+            </div>
+        </div>
+        <div class="relative h-56">
+            <canvas id="trendChart"></canvas>
+        </div>
+        <div class="flex flex-wrap gap-2 mt-4 pt-4 border-t border-white/4">
+            {% for kw in analysis.trend_keywords %}
+            <span class="text-xs font-mono text-white/35 bg-white/4 border border-white/6 px-3 py-1 rounded-lg">{{ kw }}</span>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- ── ROW 4: Competitors + Business Models ────────────────── -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
+
+        <!-- Competitors -->
+        <div class="card-elevated p-6">
+            <div class="dash-section-header">
+                <h3>{% trans "Competitor Landscape" %}</h3>
+                <span class="text-xs font-mono text-white/20">{{ analysis.competitors|length }} {% trans "identified" %}</span>
+            </div>
+            <div class="space-y-2.5">
+                {% for comp in analysis.competitors %}
+                <div class="competitor-row">
+                    <div class="flex items-start justify-between gap-3">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="w-7 h-7 rounded-lg bg-white/6 border border-white/8 flex items-center justify-center flex-shrink-0 text-xs font-mono text-white/30">
+                                {{ forloop.counter }}
+                            </div>
+                            <div class="min-w-0">
+                                <p class="text-sm font-600 text-white/85 truncate">{{ comp.name }}</p>
+                                <p class="text-xs text-white/30 mt-0.5 line-clamp-1">{{ comp.description|truncatechars:60 }}</p>
+                            </div>
+                        </div>
+                        <span class="flex-shrink-0 text-xs font-mono px-2 py-0.5 rounded-md border
+                            {% if comp.threat_level == 'High' or comp.threat_level == 'Direct' %}bg-red-500/8 text-red-400 border-red-500/15
+                            {% elif comp.threat_level == 'Medium' or comp.threat_level == 'Indirect' %}bg-yellow-500/8 text-yellow-400 border-yellow-500/15
+                            {% else %}bg-white/4 text-white/30 border-white/8{% endif %}">
+                            {{ comp.threat_level }}
+                        </span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Business Models -->
+        <div class="card-elevated p-6">
+            <div class="dash-section-header">
+                <h3>{% trans "Business Models" %}</h3>
+                <span class="text-xs font-mono text-white/20">{{ analysis.business_models|length }} {% trans "strategies" %}</span>
+            </div>
+            <div class="space-y-2.5">
+                {% for model in analysis.business_models %}
+                <div class="business-model-row">
+                    <div class="flex items-start justify-between gap-3 mb-1.5">
+                        <p class="text-sm font-600 text-white/85">{{ model.name }}</p>
+                        <span class="flex-shrink-0 text-xs font-mono px-2 py-0.5 rounded-md border
+                            {% if model.revenue_potential == 'Very High' or model.revenue_potential == 'High' %}bg-emerald-500/8 text-emerald-400 border-emerald-500/15
+                            {% elif model.revenue_potential == 'Medium' %}bg-blue-500/8 text-blue-400 border-blue-500/15
+                            {% else %}bg-white/4 text-white/30 border-white/8{% endif %}">
+                            {{ model.revenue_potential }}
+                        </span>
+                    </div>
+                    <p class="text-xs text-white/30 leading-relaxed">{{ model.description|truncatechars:90 }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- ── ROW 5: SWOT Analysis ────────────────────────────────── -->
+    <div class="card-elevated p-6 mb-5">
+        <div class="dash-section-header mb-5">
+            <h3>{% trans "SWOT Analysis" %}</h3>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="swot-quadrant bg-emerald-500/4 border-emerald-500/15">
+                <div class="swot-header text-emerald-400">
+                    <span class="w-5 h-5 rounded bg-emerald-500/15 flex items-center justify-center text-xs">S</span>
+                    {% trans "Strengths" %}
+                </div>
+                <ul class="swot-list">
+                    {% for item in swot.strengths %}<li>{{ item }}</li>{% endfor %}
+                </ul>
+            </div>
+            <div class="swot-quadrant bg-red-500/4 border-red-500/15">
+                <div class="swot-header text-red-400">
+                    <span class="w-5 h-5 rounded bg-red-500/15 flex items-center justify-center text-xs">W</span>
+                    {% trans "Weaknesses" %}
+                </div>
+                <ul class="swot-list">
+                    {% for item in swot.weaknesses %}<li>{{ item }}</li>{% endfor %}
+                </ul>
+            </div>
+            <div class="swot-quadrant bg-blue-500/4 border-blue-500/15">
+                <div class="swot-header text-blue-400">
+                    <span class="w-5 h-5 rounded bg-blue-500/15 flex items-center justify-center text-xs">O</span>
+                    {% trans "Opportunities" %}
+                </div>
+                <ul class="swot-list">
+                    {% for item in swot.opportunities %}<li>{{ item }}</li>{% endfor %}
+                </ul>
+            </div>
+            <div class="swot-quadrant bg-yellow-500/4 border-yellow-500/15">
+                <div class="swot-header text-yellow-400">
+                    <span class="w-5 h-5 rounded bg-yellow-500/15 flex items-center justify-center text-xs">T</span>
+                    {% trans "Threats" %}
+                </div>
+                <ul class="swot-list">
+                    {% for item in swot.threats %}<li>{{ item }}</li>{% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── ROW 6: Investor Perspective + AI Recommendation ─────── -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-8">
+
+        <!-- Investor Perspective -->
+        <div class="card-elevated p-6">
+            <div class="dash-section-header">
+                <h3>{% trans "Investor Perspective" %}</h3>
+            </div>
+            <div class="flex items-center gap-3 mb-4 p-3 rounded-xl border
+                {% if investor_style.color == 'emerald' %}bg-emerald-500/6 border-emerald-500/15
+                {% elif investor_style.color == 'yellow' %}bg-yellow-500/6 border-yellow-500/15
+                {% else %}bg-red-500/6 border-red-500/15{% endif %}">
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center
+                    {% if investor_style.color == 'emerald' %}bg-emerald-500/15 text-emerald-400
+                    {% elif investor_style.color == 'yellow' %}bg-yellow-500/15 text-yellow-400
+                    {% else %}bg-red-500/15 text-red-400{% endif %}">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <span class="text-sm font-600
+                    {% if investor_style.color == 'emerald' %}text-emerald-400
+                    {% elif investor_style.color == 'yellow' %}text-yellow-400
+                    {% else %}text-red-400{% endif %}">
+                    {{ investor_style.label }}
+                </span>
+            </div>
+            <p class="text-sm text-white/45 leading-relaxed">{{ analysis.investor_perspective }}</p>
+        </div>
+
+        <!-- AI Recommendation -->
+        {% if score.recommendation %}
+        <div class="card-elevated p-6 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-48 h-48 bg-brand-500/5 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/2"></div>
+            <div class="dash-section-header">
+                <h3>{% trans "AI Recommendation" %}</h3>
+            </div>
+            <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-lg bg-brand-500/15 border border-brand-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <svg class="w-4 h-4 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                </div>
+                <p class="text-sm text-white/50 leading-relaxed">{{ score.recommendation }}</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- ── Bottom Actions ──────────────────────────────────────── -->
+    <div class="flex flex-col sm:flex-row gap-3 justify-center pt-6 border-t border-white/5">
+        <a href="{% url 'analysis:input' %}" class="btn-primary px-8 py-3 text-sm">
+            {% trans "Analyze Another Idea" %}
+        </a>
+        <a href="{% url 'dashboard:history' %}" class="btn-ghost px-8 py-3 text-sm">
+            {% trans "View History" %}
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+    // ── Animate score number ───────────────────────────────────
+    const targetScore = {{ score.overall_score|default:0 }};
+    const scoreEl = document.getElementById('scoreNumber');
+    const arc = document.getElementById('scoreArc');
+    const circumference = 2 * Math.PI * 68;
+
+    // Animate number count-up
+    let current = 0;
+    const duration = 1600;
+    const start = performance.now();
+    function animateScore(ts) {
+        const progress = Math.min((ts - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        current = Math.round(eased * targetScore);
+        if (scoreEl) scoreEl.textContent = current;
+        if (progress < 1) requestAnimationFrame(animateScore);
+    }
+    setTimeout(() => requestAnimationFrame(animateScore), 200);
+
+    // Animate arc
+    if (arc) {
+        arc.style.strokeDasharray = '0 ' + circumference;
+        setTimeout(() => {
+            arc.style.transition = 'stroke-dasharray 1.8s cubic-bezier(0.34, 1.2, 0.64, 1)';
+            arc.style.strokeDasharray = `${(targetScore / 100) * circumference} ${circumference}`;
+        }, 300);
+    }
+
+    // ── Radar Chart ────────────────────────────────────────────
+    const dimData = {{ score_dimensions_json|safe }};
+    const radarCtx = document.getElementById('radarChart');
+    if (radarCtx && dimData && Object.keys(dimData).length > 0) {
+        new Chart(radarCtx, {
+            type: 'radar',
+            data: {
+                labels: Object.keys(dimData),
+                datasets: [{
+                    data: Object.values(dimData),
+                    backgroundColor: 'rgba(99,102,241,0.1)',
+                    borderColor: 'rgba(99,102,241,0.7)',
+                    borderWidth: 1.5,
+                    pointBackgroundColor: '#6366f1',
+                    pointBorderColor: 'rgba(255,255,255,0.3)',
+                    pointBorderWidth: 1,
+                    pointRadius: 3,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: '#a855f7',
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                animation: { duration: 1200, easing: 'easeOutQuart' },
+                scales: {
+                    r: {
+                        beginAtZero: true, max: 100,
+                        ticks: { display: false, stepSize: 25 },
+                        grid: { color: 'rgba(255,255,255,0.05)' },
+                        angleLines: { color: 'rgba(255,255,255,0.05)' },
+                        pointLabels: {
+                            color: 'rgba(255,255,255,0.45)',
+                            font: { size: 10, family: 'DM Sans', weight: '500' },
+                        }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(10,14,26,0.95)',
+                        borderColor: 'rgba(99,102,241,0.25)',
+                        borderWidth: 1,
+                        titleColor: 'rgba(255,255,255,0.5)',
+                        bodyColor: '#fff',
+                        padding: 10,
+                        callbacks: { label: ctx => ` ${ctx.parsed.r}/100` }
+                    }
+                }
+            }
+        });
+    }
+
+    // ── Trend Chart (initial render) ───────────────────────────
+    const initialTrendData = {{ trend_data_json|safe }};
+    const trendCtx = document.getElementById('trendChart');
+    window._trendChartInstance = null;
+
+    window.renderTrendChart = function(data) {
+        if (window._trendChartInstance) {
+            window._trendChartInstance.destroy();
+        }
+        if (!trendCtx || !data || !data.labels) return;
+        window._trendChartInstance = new Chart(trendCtx, {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                animation: { duration: 600 },
+                interaction: { mode: 'index', intersect: false },
+                scales: {
+                    x: {
+                        grid: { color: 'rgba(255,255,255,0.03)', drawBorder: false },
+                        ticks: { color: 'rgba(255,255,255,0.25)', font: { size: 9, family: 'JetBrains Mono' }, maxTicksLimit: 10 }
+                    },
+                    y: {
+                        beginAtZero: true, max: 100,
+                        grid: { color: 'rgba(255,255,255,0.03)', drawBorder: false },
+                        ticks: { color: 'rgba(255,255,255,0.25)', font: { size: 9, family: 'JetBrains Mono' }, callback: v => v + '%' }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: { color: 'rgba(255,255,255,0.45)', font: { size: 11, family: 'DM Sans' }, usePointStyle: true, pointStyleWidth: 6, boxHeight: 6 }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(10,14,26,0.95)',
+                        borderColor: 'rgba(255,255,255,0.08)',
+                        borderWidth: 1,
+                        titleColor: 'rgba(255,255,255,0.5)',
+                        bodyColor: '#fff',
+                        padding: 10,
+                    }
+                }
+            }
+        });
+    }
+
+    renderTrendChart(initialTrendData);
+});
+</script>
+
+<script>
+// Alpine component for trend chart time filter
+function trendChartWidget(analysisId) {
+    return {
+        activeTimeframe: '{{ analysis.trend_data.timeframe_key|default:"12M" }}',
+        isMock: {{ analysis.trend_data.is_mock|yesno:"true,false" }},
+        isLoading: false,
+
+        async switchTimeframe(tf) {
+            if (tf === this.activeTimeframe || this.isLoading) return;
+            this.activeTimeframe = tf;
+            this.isLoading = true;
+            try {
+                const resp = await fetch(`/analyze/${analysisId}/trends/?tf=${tf}`);
+                const data = await resp.json();
+                this.isMock = data.is_mock || false;
+                renderTrendChart(data);
+            } catch(e) {
+                console.error('Trend fetch error:', e);
+            } finally {
+                this.isLoading = false;
+            }
+        }
+    }
+}
+</script>
+{% endblock %}
+

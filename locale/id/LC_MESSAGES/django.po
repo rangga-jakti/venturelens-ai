@@ -1,0 +1,416 @@
+# VentureLens AI - Bahasa Indonesia Translation
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: id\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+# Navigation
+msgid "Home"
+msgstr "Beranda"
+
+msgid "Analyze"
+msgstr "Analisis"
+
+msgid "History"
+msgstr "Riwayat"
+
+msgid "Sign In"
+msgstr "Masuk"
+
+msgid "Get Started"
+msgstr "Mulai Gratis"
+
+msgid "New Analysis"
+msgstr "Analisis Baru"
+
+msgid "Built for founders, by AI"
+msgstr "[ built by rangga ]"
+
+msgid "Powered by"
+msgstr "Didukung oleh"
+
+# Landing Page
+msgid "AI Analysis Engine Active"
+msgstr "Mesin Analisis AI Aktif"
+
+msgid "Validate Your"
+msgstr "Validasi"
+
+msgid "Startup Idea"
+msgstr "Ide Startup Kamu"
+
+msgid "with AI Precision"
+msgstr "dengan Presisi AI"
+
+msgid "Get a comprehensive 360° analysis — viability scoring, market trends, competitor intelligence, SWOT analysis, and investor perspective — powered by LLaMA 3.3."
+msgstr "Dapatkan analisis 360° lengkap — skor kelayakan, tren pasar, intelijen kompetitor, analisis SWOT, dan perspektif investor — didukung LLaMA 3.3."
+
+msgid "Analyze My Idea"
+msgstr "Analisis Ide Saya"
+
+msgid "See How It Works"
+msgstr "Lihat Cara Kerjanya"
+
+msgid "Analysis Dimensions"
+msgstr "Dimensi Analisis"
+
+msgid "LLM Powered"
+msgstr "Berbasis LLM"
+
+msgid "Viability Score"
+msgstr "Skor Kelayakan"
+
+msgid "What VentureLens Does"
+msgstr "Apa yang VentureLens Lakukan"
+
+msgid "7 Dimensions of"
+msgstr "7 Dimensi"
+
+msgid "Startup Intelligence"
+msgstr "Kecerdasan Startup"
+
+msgid "Every analysis covers the critical factors investors and founders need to validate a startup idea."
+msgstr "Setiap analisis mencakup faktor kritis yang dibutuhkan investor dan founder untuk memvalidasi ide startup."
+
+msgid "How It Works"
+msgstr "Cara Kerja"
+
+msgid "From idea to insights in seconds."
+msgstr "Dari ide ke wawasan dalam hitungan detik."
+
+msgid "Describe Idea"
+msgstr "Deskripsikan Ide"
+
+msgid "Enter your startup concept in plain language"
+msgstr "Masukkan konsep startup kamu dalam bahasa biasa"
+
+msgid "AI Analyzes"
+msgstr "AI Menganalisis"
+
+msgid "LLaMA 3.3 processes across 7 dimensions"
+msgstr "LLaMA 3.3 memproses di 7 dimensi"
+
+msgid "Trends Loaded"
+msgstr "Tren Dimuat"
+
+msgid "Real Google Trends data visualized live"
+msgstr "Data Google Trends nyata divisualisasikan secara langsung"
+
+msgid "Get Insights"
+msgstr "Dapatkan Wawasan"
+
+msgid "Full dashboard with score and recommendations"
+msgstr "Dashboard lengkap dengan skor dan rekomendasi"
+
+msgid "Ready to Validate?"
+msgstr "Siap Memvalidasi?"
+
+msgid "Enter your startup idea and get a comprehensive AI analysis in under 60 seconds."
+msgstr "Masukkan ide startup kamu dan dapatkan analisis AI komprehensif dalam 60 detik."
+
+msgid "Launch Analysis"
+msgstr "Mulai Analisis"
+
+# Auth pages
+msgid "Welcome back"
+msgstr "Selamat datang kembali"
+
+msgid "Sign in to your VentureLens account"
+msgstr "Masuk ke akun VentureLens kamu"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Password"
+msgstr "Kata Sandi"
+
+msgid "Your password"
+msgstr "Kata sandi kamu"
+
+msgid "Don't have an account?"
+msgstr "Belum punya akun?"
+
+msgid "Create one free"
+msgstr "Buat gratis"
+
+msgid "Create your account"
+msgstr "Buat akun kamu"
+
+msgid "Start analyzing startup ideas for free"
+msgstr "Mulai analisis ide startup secara gratis"
+
+msgid "Full Name"
+msgstr "Nama Lengkap"
+
+msgid "Your full name"
+msgstr "Nama lengkap kamu"
+
+msgid "Min. 8 characters"
+msgstr "Min. 8 karakter"
+
+msgid "Confirm Password"
+msgstr "Konfirmasi Kata Sandi"
+
+msgid "Repeat password"
+msgstr "Ulangi kata sandi"
+
+msgid "Create Account — It's Free"
+msgstr "Buat Akun — Gratis"
+
+msgid "Free plan: 10 analyses per day"
+msgstr "Paket Gratis: 10 analisis per hari"
+
+msgid "Already have an account?"
+msgstr "Sudah punya akun?"
+
+msgid "Sign in"
+msgstr "Masuk"
+
+# Profile page
+msgid "Profile"
+msgstr "Profil"
+
+msgid "Usage Stats"
+msgstr "Statistik Penggunaan"
+
+msgid "Total Analyses"
+msgstr "Total Analisis"
+
+msgid "Today"
+msgstr "Hari Ini"
+
+msgid "Member since"
+msgstr "Bergabung sejak"
+
+msgid "Preferences"
+msgstr "Preferensi"
+
+msgid "Language"
+msgstr "Bahasa"
+
+msgid "Your name"
+msgstr "Nama kamu"
+
+msgid "Save Changes"
+msgstr "Simpan Perubahan"
+
+msgid "Recent Analyses"
+msgstr "Analisis Terbaru"
+
+msgid "Sign out of VentureLens"
+msgstr "Keluar dari VentureLens"
+
+# Analyze input page
+msgid "Analyze Your Startup"
+msgstr "Analisis Startup Kamu"
+
+msgid "AI Engine Ready"
+msgstr "Mesin AI Siap"
+
+msgid "What's Your"
+msgstr "Apa"
+
+msgid "Startup Idea?"
+msgstr "Ide Startup Kamu?"
+
+msgid "Describe it in your own words. Be specific about the problem, solution, and target market."
+msgstr "Deskripsikan dengan kata-katamu sendiri. Spesifik tentang masalah, solusi, dan target pasar."
+
+msgid "Your Startup Idea"
+msgstr "Ide Startup Kamu"
+
+msgid "be as detailed as possible"
+msgstr "sedetail mungkin"
+
+msgid "Example: An AI-powered personal finance app for Gen Z that analyzes spending habits, predicts cash flow shortfalls, and provides micro-savings recommendations through a gamified interface..."
+msgstr "Contoh: Aplikasi keuangan pribadi berbasis AI untuk Gen Z yang menganalisis kebiasaan belanja, memprediksi kekurangan arus kas, dan memberikan rekomendasi tabungan mikro melalui antarmuka gamifikasi..."
+
+msgid "Try an example"
+msgstr "Coba contoh"
+
+msgid "Your analysis will include"
+msgstr "Analisis kamu akan mencakup"
+
+msgid "Analyze with AI"
+msgstr "Analisis dengan AI"
+
+msgid "Analysis typically takes 20–40 seconds · Up to"
+msgstr "Analisis biasanya membutuhkan 20–40 detik · Hingga"
+
+msgid "analyses per day"
+msgstr "analisis per hari"
+
+msgid "Too brief"
+msgstr "Terlalu singkat"
+
+msgid "Getting there"
+msgstr "Hampir cukup"
+
+msgid "Good detail"
+msgstr "Detail bagus"
+
+msgid "Excellent"
+msgstr "Sangat baik"
+
+msgid "Initializing AI engine..."
+msgstr "Menginisialisasi mesin AI..."
+
+msgid "Analyzing market demand..."
+msgstr "Menganalisis permintaan pasar..."
+
+msgid "Scanning competitors..."
+msgstr "Memindai kompetitor..."
+
+msgid "Calculating viability score..."
+msgstr "Menghitung skor kelayakan..."
+
+msgid "Fetching trend data..."
+msgstr "Mengambil data tren..."
+
+msgid "Generating insights..."
+msgstr "Menghasilkan wawasan..."
+
+msgid "Analyzing with AI..."
+msgstr "Menganalisis dengan AI..."
+
+msgid "AI-powered startup idea analyzer. Get instant viability scores, market analysis, competitor insights, and investor perspectives."
+msgstr "Penganalisis ide startup berbasis AI. Dapatkan skor kelayakan instan, analisis pasar, wawasan kompetitor, dan perspektif investor."
+
+# Results Dashboard
+msgid "Analysis Report"
+msgstr "Laporan Analisis"
+
+msgid "Dimension Breakdown"
+msgstr "Rincian Dimensi"
+
+msgid "Problem Statement"
+msgstr "Pernyataan Masalah"
+
+msgid "Value Proposition"
+msgstr "Proposisi Nilai"
+
+msgid "Scalability Potential"
+msgstr "Potensi Skalabilitas"
+
+msgid "Market Trend Analysis"
+msgstr "Analisis Tren Pasar"
+
+msgid "Competitor Landscape"
+msgstr "Lanskap Kompetitor"
+
+msgid "identified"
+msgstr "teridentifikasi"
+
+msgid "strategies"
+msgstr "strategi"
+
+msgid "SWOT Analysis"
+msgstr "Analisis SWOT"
+
+msgid "Strengths"
+msgstr "Kekuatan"
+
+msgid "Weaknesses"
+msgstr "Kelemahan"
+
+msgid "Opportunities"
+msgstr "Peluang"
+
+msgid "Threats"
+msgstr "Ancaman"
+
+msgid "Investor Perspective"
+msgstr "Perspektif Investor"
+
+msgid "AI Recommendation"
+msgstr "Rekomendasi AI"
+
+msgid "Analyze Another Idea"
+msgstr "Analisis Ide Lain"
+
+msgid "View History"
+msgstr "Lihat Riwayat"
+
+msgid "7 metrics"
+msgstr "7 metrik"
+
+msgid "Likely to Fund"
+msgstr "Kemungkinan Didanai"
+
+msgid "Neutral"
+msgstr "Netral"
+
+msgid "Unlikely to Fund"
+msgstr "Kemungkinan Tidak Didanai"
+
+# History page
+msgid "Analysis History"
+msgstr "Riwayat Analisis"
+
+msgid "total"
+msgstr "total"
+
+msgid "No analyses yet"
+msgstr "Belum ada analisis"
+
+msgid "Start by analyzing your first startup idea and get a comprehensive AI report."
+msgstr "Mulai dengan menganalisis ide startup pertamamu dan dapatkan laporan AI yang komprehensif."
+
+msgid "Analyze an Idea"
+msgstr "Analisis Sebuah Ide"
+
+# Processing page
+msgid "Analyzing..."
+msgstr "Menganalisis..."
+
+msgid "AI is Analyzing"
+msgstr "AI Sedang Menganalisis"
+
+msgid "Core analysis"
+msgstr "Analisis inti"
+
+msgid "Viability scoring"
+msgstr "Penilaian kelayakan"
+
+msgid "Competitor detection"
+msgstr "Deteksi kompetitor"
+
+msgid "Business models"
+msgstr "Model bisnis"
+
+msgid "Investor perspective"
+msgstr "Perspektif investor"
+
+msgid "SWOT analysis"
+msgstr "Analisis SWOT"
+
+msgid "Market trends"
+msgstr "Tren pasar"
+
+msgid "done"
+msgstr "selesai"
+
+msgid "Typical: 20–40s"
+msgstr "Biasanya: 20–40 detik"
+
+# Failed page
+msgid "Analysis Failed"
+msgstr "Analisis Gagal"
+
+msgid "Something went wrong while processing your idea. This is usually a temporary issue."
+msgstr "Terjadi kesalahan saat memproses idemu. Ini biasanya masalah sementara."
+
+msgid "Try Again"
+msgstr "Coba Lagi"
+
+# Feature names
+msgid "AI-Powered Analysis"
+msgstr "Analisis Berbasis AI"
+
+msgid "Investor View"
+msgstr "Perspektif Investor"
+
+
+
