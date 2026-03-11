@@ -1,10 +1,26 @@
-# VentureLens AI 🚀
+# VentureLens AI
 
-> An advanced AI-powered startup idea analyzer built with Django, PostgreSQL, and LLM integration.
+AI-powered platform for validating startup ideas using market data and AI insights.
+
+VentureLens analyzes market demand, competition, and trends using Google Trends data
+and generates actionable business insights with LLMs.
+
+Built with Django, PostgreSQL, and Groq LLM.
 
 ![VentureLens AI](https://img.shields.io/badge/VentureLens-AI-blueviolet?style=for-the-badge)
 ![Python](https://img.shields.io/badge/Python-3.12-blue?style=for-the-badge&logo=python)
 ![Django](https://img.shields.io/badge/Django-5.x-green?style=for-the-badge&logo=django)
+
+---
+
+## Features
+
+- Startup idea validation using real market data
+- Google Trends demand analysis
+- AI-generated business insights
+- Market opportunity scoring
+- Keyword comparison
+- Interactive charts
 
 ---
 
