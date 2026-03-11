@@ -1,1 +1,1 @@
-web: gunicorn venturelens.wsgi --log-file -
+web: gunicorn venturelens_project.wsgi:application --log-file -
