@@ -1,0 +1,1 @@
+web: gunicorn venturelens.wsgi --log-file -
