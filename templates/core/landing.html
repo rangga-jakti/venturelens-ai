@@ -1,13 +1,17 @@
-{% extends 'base.html' %}
+﻿{% extends 'base.html' %}
 {% load i18n %}
 
-{% block title %}VentureLens AI — {% trans "Analyze Your Startup Idea" %}{% endblock %}
+{% block title %}VentureLens AI – {% trans "Analyze Your Startup Idea" %}{% endblock %}
 
 {% block content %}
 
-<section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-32">
-    <div class="max-w-5xl mx-auto px-6 text-center animate-fade-in">
+<!-- Hero Section -->
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-16">
+    <div class="absolute inset-0 opacity-[0.03]" style="background-image: linear-gradient(#a78bfa 1px, transparent 1px), linear-gradient(90deg, #a78bfa 1px, transparent 1px); background-size: 60px 60px;"></div>
+    <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-brand-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
+    <div class="max-w-6xl mx-auto px-6 text-center animate-fade-in relative z-10">
         <div class="inline-flex items-center gap-2 bg-brand-500/10 border border-brand-500/20 rounded-full px-4 py-2 mb-8 backdrop-blur-sm">
             <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
             <span class="text-sm text-brand-400 font-mono">{% trans "AI Analysis Engine Active" %}</span>
@@ -33,7 +37,7 @@
             <a href="#features" class="btn-ghost text-base px-8 py-4 min-w-[200px]">{% trans "See How It Works" %}</a>
         </div>
 
-        <div class="grid grid-cols-3 gap-8 max-w-lg mx-auto">
+        <div class="grid grid-cols-3 gap-8 max-w-lg mx-auto mb-20">
             <div class="text-center">
                 <div class="font-display text-3xl font-700 text-white">7</div>
                 <div class="text-xs text-white/30 mt-1 uppercase tracking-widest">{% trans "Analysis Dimensions" %}</div>
@@ -45,6 +49,99 @@
             <div class="text-center">
                 <div class="font-display text-3xl font-700 text-white">0–100</div>
                 <div class="text-xs text-white/30 mt-1 uppercase tracking-widest">{% trans "Viability Score" %}</div>
+            </div>
+        </div>
+
+        <!-- App Mockup -->
+        <div class="relative max-w-4xl mx-auto">
+            <div class="absolute -inset-4 bg-gradient-to-r from-brand-500/20 via-purple-500/20 to-cyan-500/20 rounded-3xl blur-2xl"></div>
+            <div class="relative glass-card rounded-2xl border border-white/10 overflow-hidden shadow-2xl">
+                <div class="flex items-center gap-2 px-4 py-3 bg-white/5 border-b border-white/10">
+                    <div class="flex gap-1.5">
+                        <div class="w-3 h-3 rounded-full bg-red-500/60"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500/60"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500/60"></div>
+                    </div>
+                    <div class="flex-1 mx-4">
+                        <div class="bg-white/5 rounded-md px-3 py-1 text-xs text-white/30 text-left font-mono">venturelens.ai/dashboard</div>
+                    </div>
+                </div>
+                <div class="p-6 bg-gradient-to-br from-slate-900 to-slate-950">
+                    <div class="grid grid-cols-3 gap-4 mb-4">
+                        <div class="col-span-1 bg-white/5 rounded-xl p-4 border border-white/10 flex flex-col items-center justify-center">
+                            <div class="text-xs text-white/40 mb-2 uppercase tracking-wider">Viability Score</div>
+                            <div class="relative w-20 h-20">
+                                <svg class="w-20 h-20 -rotate-90" viewBox="0 0 36 36">
+                                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="3"/>
+                                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="url(#scoreGrad)" stroke-width="3" stroke-dasharray="85 100" stroke-linecap="round"/>
+                                    <defs>
+                                        <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                            <stop offset="0%" stop-color="#a78bfa"/>
+                                            <stop offset="100%" stop-color="#22d3ee"/>
+                                        </linearGradient>
+                                    </defs>
+                                </svg>
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <span class="text-2xl font-700 text-white">85</span>
+                                </div>
+                            </div>
+                            <div class="mt-2 text-xs px-2 py-0.5 bg-emerald-500/20 text-emerald-400 rounded-full">Strong</div>
+                        </div>
+                        <div class="col-span-2 bg-white/5 rounded-xl p-4 border border-white/10">
+                            <div class="text-xs text-white/40 mb-3 uppercase tracking-wider">Dimension Breakdown</div>
+                            <div class="flex items-center justify-center h-24 opacity-80">
+                                <svg viewBox="0 0 200 160" class="w-full h-full">
+                                    <polygon points="100,20 160,55 155,115 100,140 45,115 40,55" fill="rgba(167,139,250,0.15)" stroke="rgba(167,139,250,0.4)" stroke-width="1.5"/>
+                                    <polygon points="100,35 145,62 140,105 100,122 60,105 55,62" fill="rgba(34,211,238,0.1)" stroke="rgba(34,211,238,0.3)" stroke-width="1"/>
+                                    <text x="100" y="12" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">Market</text>
+                                    <text x="168" y="58" text-anchor="start" fill="rgba(255,255,255,0.4)" font-size="9">Score</text>
+                                    <text x="163" y="120" text-anchor="start" fill="rgba(255,255,255,0.4)" font-size="9">Scale</text>
+                                    <text x="100" y="152" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="9">Moat</text>
+                                    <text x="30" y="120" text-anchor="end" fill="rgba(255,255,255,0.4)" font-size="9">Biz</text>
+                                    <text x="28" y="58" text-anchor="end" fill="rgba(255,255,255,0.4)" font-size="9">SWOT</text>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="bg-red-500/10 border border-red-500/20 rounded-lg p-3">
+                            <div class="text-xs text-red-400 mb-1">⚠ Problem</div>
+                            <div class="text-xs text-white/50 leading-relaxed">Market gap identified in early-stage validation tools...</div>
+                        </div>
+                        <div class="bg-brand-500/10 border border-brand-500/20 rounded-lg p-3">
+                            <div class="text-xs text-brand-400 mb-1">⚡ Value Prop</div>
+                            <div class="text-xs text-white/50 leading-relaxed">Unique AI-driven approach reduces validation time by 10x...</div>
+                        </div>
+                        <div class="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-3">
+                            <div class="text-xs text-emerald-400 mb-1">↗ Scalability</div>
+                            <div class="text-xs text-white/50 leading-relaxed">High potential — global market, low marginal cost...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Social Proof -->
+<section class="py-16 relative border-y border-white/5">
+    <div class="max-w-5xl mx-auto px-6">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div>
+                <div class="font-display text-4xl font-700 bg-gradient-to-r from-brand-400 to-purple-400 bg-clip-text text-transparent">60s</div>
+                <div class="text-sm text-white/30 mt-1">{% trans "Analysis Time" %}</div>
+            </div>
+            <div>
+                <div class="font-display text-4xl font-700 bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">7</div>
+                <div class="text-sm text-white/30 mt-1">{% trans "AI Dimensions" %}</div>
+            </div>
+            <div>
+                <div class="font-display text-4xl font-700 bg-gradient-to-r from-cyan-400 to-emerald-400 bg-clip-text text-transparent">360°</div>
+                <div class="text-sm text-white/30 mt-1">{% trans "Coverage" %}</div>
+            </div>
+            <div>
+                <div class="font-display text-4xl font-700 bg-gradient-to-r from-emerald-400 to-brand-400 bg-clip-text text-transparent">Free</div>
+                <div class="text-sm text-white/30 mt-1">{% trans "To Start" %}</div>
             </div>
         </div>
     </div>
@@ -83,6 +180,15 @@
                 <p class="text-white/40 text-sm leading-relaxed">{% trans feature.description %}</p>
             </div>
             {% endfor %}
+            {% if features|length < 7 %}
+            <div class="feature-card group" style="animation-delay: 600ms;">
+                <div class="feature-icon-wrap mb-5">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                </div>
+                <h3 class="font-display text-lg font-600 text-white mb-2">{% trans "Investor Perspective" %}</h3>
+                <p class="text-white/40 text-sm leading-relaxed">{% trans "See your idea through an investor's eyes — risks, opportunities, and fundability assessment." %}</p>
+            </div>
+            {% endif %}
         </div>
     </div>
 </section>
@@ -113,20 +219,24 @@
 <!-- CTA -->
 <section class="py-24 relative">
     <div class="max-w-3xl mx-auto px-6 text-center">
-        <div class="glass-card rounded-3xl p-12 border border-white/10">
-            <div class="w-16 h-16 bg-gradient-to-br from-brand-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                </svg>
+        <div class="glass-card rounded-3xl p-12 border border-white/10 relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-br from-brand-500/5 via-purple-500/5 to-cyan-500/5 pointer-events-none"></div>
+            <div class="relative z-10">
+                <div class="w-16 h-16 bg-gradient-to-br from-brand-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </div>
+                <h2 class="font-display text-4xl font-700 text-white mb-4">{% trans "Ready to Validate?" %}</h2>
+                <p class="text-white/40 mb-8 text-lg">{% trans "Enter your startup idea and get a comprehensive AI analysis in under 60 seconds." %}</p>
+                <a href="{% url 'analysis:input' %}" class="btn-primary text-base px-10 py-4 inline-flex items-center gap-2">
+                    {% trans "Launch Analysis" %}
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                    </svg>
+                </a>
+                <p class="text-white/20 text-sm mt-4">{% trans "Free to use. No credit card required." %}</p>
             </div>
-            <h2 class="font-display text-4xl font-700 text-white mb-4">{% trans "Ready to Validate?" %}</h2>
-            <p class="text-white/40 mb-8 text-lg">{% trans "Enter your startup idea and get a comprehensive AI analysis in under 60 seconds." %}</p>
-            <a href="{% url 'analysis:input' %}" class="btn-primary text-base px-10 py-4 inline-flex items-center gap-2">
-                {% trans "Launch Analysis" %}
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
-                </svg>
-            </a>
         </div>
     </div>
 </section>
