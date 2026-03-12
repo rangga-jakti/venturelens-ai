@@ -1,2 +1,2 @@
 [deploy]
-releaseCommand = "python manage.py migrate --fake-initial && python manage.py collectstatic --noinput"
+releaseCommand = "python manage.py migrate --run-syncdb && python manage.py collectstatic --noinput"
