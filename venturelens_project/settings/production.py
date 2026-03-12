@@ -21,3 +21,7 @@ CSRF_TRUSTED_ORIGINS = ['https://web-production-e1166.up.railway.app']
 # Static files
 STATIC_ROOT = '/app/staticfiles'
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+
+# Static files
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
