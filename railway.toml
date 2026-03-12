@@ -1,2 +1,2 @@
 [deploy]
-releaseCommand = "python manage.py migrate && python manage.py collectstatic --noinput && echo 'from django.contrib.auth import get_user_model; U = get_user_model(); U.objects.filter(email=\"admin@venturelens.ai\").exists() or U.objects.create_superuser(\"admin\", \"admin@venturelens.ai\", \"Admin1234!\")' | python manage.py shell"
+releaseCommand = "python manage.py migrate --fake-initial && python manage.py collectstatic --noinput"
