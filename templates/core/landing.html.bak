@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}VentureLens AI — {% trans "Analyze Your Startup Idea" %}{% endblock %}
+
+{% block content %}
+
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-32">
+    <div class="max-w-5xl mx-auto px-6 text-center animate-fade-in">
+
+        <div class="inline-flex items-center gap-2 bg-brand-500/10 border border-brand-500/20 rounded-full px-4 py-2 mb-8 backdrop-blur-sm">
+            <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+            <span class="text-sm text-brand-400 font-mono">{% trans "AI Analysis Engine Active" %}</span>
+        </div>
+
+        <h1 class="font-display text-6xl md:text-7xl lg:text-8xl font-800 leading-[0.95] tracking-tight mb-8">
+            <span class="text-white">{% trans "Validate Your" %}</span><br>
+            <span class="bg-gradient-to-r from-brand-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">{% trans "Startup Idea" %}</span><br>
+            <span class="text-white">{% trans "with AI Precision" %}</span>
+        </h1>
+
+        <p class="text-xl text-white/50 max-w-2xl mx-auto leading-relaxed mb-12 font-300">
+            {% trans "Get a comprehensive 360° analysis — viability scoring, market trends, competitor intelligence, SWOT analysis, and investor perspective — powered by LLaMA 3.3." %}
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
+            <a href="{% url 'analysis:input' %}" class="group btn-primary text-base px-8 py-4 min-w-[200px]">
+                <span>{% trans "Analyze My Idea" %}</span>
+                <svg class="w-5 h-5 ml-2 inline transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                </svg>
+            </a>
+            <a href="#features" class="btn-ghost text-base px-8 py-4 min-w-[200px]">{% trans "See How It Works" %}</a>
+        </div>
+
+        <div class="grid grid-cols-3 gap-8 max-w-lg mx-auto">
+            <div class="text-center">
+                <div class="font-display text-3xl font-700 text-white">7</div>
+                <div class="text-xs text-white/30 mt-1 uppercase tracking-widest">{% trans "Analysis Dimensions" %}</div>
+            </div>
+            <div class="text-center border-x border-white/10">
+                <div class="font-display text-3xl font-700 text-brand-400">AI</div>
+                <div class="text-xs text-white/30 mt-1 uppercase tracking-widest">{% trans "LLM Powered" %}</div>
+            </div>
+            <div class="text-center">
+                <div class="font-display text-3xl font-700 text-white">0–100</div>
+                <div class="text-xs text-white/30 mt-1 uppercase tracking-widest">{% trans "Viability Score" %}</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features -->
+<section id="features" class="py-32 relative">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="text-center mb-20">
+            <div class="inline-block text-xs font-mono text-brand-400 uppercase tracking-widest mb-4 bg-brand-500/10 px-3 py-1.5 rounded-full border border-brand-500/20">{% trans "What VentureLens Does" %}</div>
+            <h2 class="font-display text-4xl md:text-5xl font-700 text-white mb-6">
+                {% trans "7 Dimensions of" %}<br><span class="text-brand-400">{% trans "Startup Intelligence" %}</span>
+            </h2>
+            <p class="text-white/40 text-lg max-w-xl mx-auto">{% trans "Every analysis covers the critical factors investors and founders need to validate a startup idea." %}</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for feature in features %}
+            <div class="feature-card group" style="animation-delay: {{ forloop.counter0 }}00ms;">
+                <div class="feature-icon-wrap mb-5">
+                    {% if feature.icon == 'brain' %}
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                    {% elif feature.icon == 'chart-bar' %}
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                    {% elif feature.icon == 'trending-up' %}
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                    {% elif feature.icon == 'users' %}
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    {% elif feature.icon == 'dollar-sign' %}
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    {% else %}
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                    {% endif %}
+                </div>
+                <h3 class="font-display text-lg font-600 text-white mb-2">{% trans feature.title %}</h3>
+                <p class="text-white/40 text-sm leading-relaxed">{% trans feature.description %}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section class="py-24 relative">
+    <div class="max-w-4xl mx-auto px-6">
+        <div class="text-center mb-16">
+            <h2 class="font-display text-4xl font-700 text-white mb-4">{% trans "How It Works" %}</h2>
+            <p class="text-white/40">{% trans "From idea to insights in seconds." %}</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-0 relative">
+            <div class="hidden md:block absolute top-10 left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-transparent via-brand-500/30 to-transparent"></div>
+            {% for num in "1234" %}
+            <div class="relative flex flex-col items-center text-center p-6">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-500 to-purple-600 flex items-center justify-center font-display font-700 text-white mb-4 relative z-10">{{ forloop.counter }}</div>
+                {% if forloop.counter == 1 %}<h4 class="font-600 text-white mb-2">{% trans "Describe Idea" %}</h4><p class="text-sm text-white/40">{% trans "Enter your startup concept in plain language" %}</p>
+                {% elif forloop.counter == 2 %}<h4 class="font-600 text-white mb-2">{% trans "AI Analyzes" %}</h4><p class="text-sm text-white/40">{% trans "LLaMA 3.3 processes across 7 dimensions" %}</p>
+                {% elif forloop.counter == 3 %}<h4 class="font-600 text-white mb-2">{% trans "Trends Loaded" %}</h4><p class="text-sm text-white/40">{% trans "Real Google Trends data visualized live" %}</p>
+                {% else %}<h4 class="font-600 text-white mb-2">{% trans "Get Insights" %}</h4><p class="text-sm text-white/40">{% trans "Full dashboard with score and recommendations" %}</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="py-24 relative">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+        <div class="glass-card rounded-3xl p-12 border border-white/10">
+            <div class="w-16 h-16 bg-gradient-to-br from-brand-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                </svg>
+            </div>
+            <h2 class="font-display text-4xl font-700 text-white mb-4">{% trans "Ready to Validate?" %}</h2>
+            <p class="text-white/40 mb-8 text-lg">{% trans "Enter your startup idea and get a comprehensive AI analysis in under 60 seconds." %}</p>
+            <a href="{% url 'analysis:input' %}" class="btn-primary text-base px-10 py-4 inline-flex items-center gap-2">
+                {% trans "Launch Analysis" %}
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

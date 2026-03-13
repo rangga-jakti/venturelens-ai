@@ -28,6 +28,36 @@
                 <span class="text-xs font-mono text-white/20 bg-white/4 border border-white/6 px-3 py-1.5 rounded-lg">
                     {{ analysis.processing_time_seconds|floatformat:0 }}s
                 </span>
+                <!-- Feedback buttons -->
+                <div x-data="{ feedback: '{{ analysis.feedback }}' }" class="flex items-center gap-1">
+                    <span class="text-xs text-white/20 mr-1">{% trans "Helpful?" %}</span>
+                    <button
+                        @click="
+                            feedback = 'up';
+                            fetch('{% url 'analysis:feedback' analysis.pk %}', {
+                                method: 'POST',
+                                headers: {'X-CSRFToken': '{{ csrf_token }}', 'Content-Type': 'application/x-www-form-urlencoded'},
+                                body: 'feedback=up'
+                            })
+                        "
+                        :class="feedback === 'up' ? 'text-emerald-400 bg-emerald-500/20 border-emerald-500/30' : 'text-white/30 bg-white/5 border-white/10 hover:text-emerald-400'"
+                        class="p-1.5 rounded-lg border transition-all">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.096l-.483 4A2 2 0 0118.282 18H9.5a2 2 0 01-2-2v-5.5a2 2 0 00-2-2H4"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 10V6a2 2 0 012-2h.5"/></svg>
+                    </button>
+                    <button
+                        @click="
+                            feedback = 'down';
+                            fetch('{% url 'analysis:feedback' analysis.pk %}', {
+                                method: 'POST',
+                                headers: {'X-CSRFToken': '{{ csrf_token }}', 'Content-Type': 'application/x-www-form-urlencoded'},
+                                body: 'feedback=down'
+                            })
+                        "
+                        :class="feedback === 'down' ? 'text-red-400 bg-red-500/20 border-red-500/30' : 'text-white/30 bg-white/5 border-white/10 hover:text-red-400'"
+                        class="p-1.5 rounded-lg border transition-all">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14H5.236a2 2 0 01-1.789-2.096l.483-4A2 2 0 015.718 6H14.5a2 2 0 012 2v5.5a2 2 0 002 2H20"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14v4a2 2 0 01-2 2h-.5"/></svg>
+                    </button>
+                </div>
                 <a href="{% url 'analysis:input' %}" class="btn-primary text-sm px-4 py-2">
                     + {% trans "New Analysis" %}
                 </a>

@@ -33,7 +33,8 @@ class StartupAnalysis(models.Model):
     status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING)
     processing_time_seconds = models.FloatField(null=True, blank=True)
     error_message = models.TextField(blank=True)
-
+    feedback = models.CharField(max_length=10, blank=True, choices=[('up', 'Up'), ('down', 'Down')])
+	
     problem_statement = models.TextField(blank=True)
     solution_summary = models.TextField(blank=True)
     target_market_analysis = models.TextField(blank=True)

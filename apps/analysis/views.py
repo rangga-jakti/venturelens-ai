@@ -123,3 +123,16 @@ class TrendsTimeframeView(LoginRequiredMixin, View):
         data = trends_service.fetch_trends(keywords[:3], timeframe_key=timeframe_key)
 
         return JsonResponse(data)
+
+class FeedbackView(LoginRequiredMixin, View):
+    """AJAX endpoint — save thumbs up/down feedback."""
+    login_url = '/accounts/login/'
+
+    def post(self, request, pk):
+        analysis = get_object_or_404(StartupAnalysis, pk=pk, user=request.user)
+        feedback = request.POST.get('feedback', '')
+        if feedback in ('up', 'down'):
+            analysis.feedback = feedback
+            analysis.save(update_fields=['feedback'])
+            return JsonResponse({'status': 'ok', 'feedback': feedback})
+        return JsonResponse({'status': 'error'}, status=400)
