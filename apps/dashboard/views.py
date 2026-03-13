@@ -80,3 +80,11 @@ class HistoryView(DetailView):
             status=StartupAnalysis.Status.COMPLETED
         ).select_related('viability_score').order_by('-created_at')[:20]
         return render(request, self.template_name, {'analyses': analyses})
+
+class DeleteAnalysisView(LoginRequiredMixin, View):
+    login_url = '/accounts/login/'
+
+    def post(self, request, pk):
+        analysis = get_object_or_404(StartupAnalysis, pk=pk, user=request.user)
+        analysis.delete()
+        return JsonResponse({'status': 'ok'})
