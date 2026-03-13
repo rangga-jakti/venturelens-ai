@@ -46,3 +46,9 @@ class LandingView(TemplateView):
             },
         ]
         return context
+
+class PrivacyView(TemplateView):
+    template_name = 'core/privacy.html'
+
+class TermsView(TemplateView):
+    template_name = 'core/terms.html'
