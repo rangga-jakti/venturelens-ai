@@ -156,8 +156,10 @@
                 <span>·</span>
                 <span>{% trans "[ built by Mirangga Jakti ]" %}</span>
             </div>
-            <div class="text-white/20 text-xs font-mono">
-                {% trans "Powered by" %} Groq x LLaMA 3.3 x Google Trends - 2026 Mirangga Jakti
+            <div class="flex items-center gap-4 text-xs">
+                <a href="{% url 'core:privacy' %}" class="text-white/30 hover:text-white/60 transition-colors">Privacy Policy</a>
+                <a href="{% url 'core:terms' %}" class="text-white/30 hover:text-white/60 transition-colors">Terms of Service</a>
+                <span class="text-white/20 font-mono">{% trans "Powered by" %} Groq x LLaMA 3.3 - 2026</span>
             </div>
         </div>
     </footer>

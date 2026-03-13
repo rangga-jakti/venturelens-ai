@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}Privacy Policy – VentureLens AI{% endblock %}
+
+{% block content %}
+<section class="py-24 relative">
+    <div class="max-w-3xl mx-auto px-6">
+
+        <div class="mb-12">
+            <h1 class="font-display text-5xl font-700 text-white mb-4">Privacy Policy</h1>
+            <p class="text-white/40">Last updated: March 2026</p>
+        </div>
+
+        <div class="prose prose-invert max-w-none space-y-8 text-white/70 leading-relaxed">
+
+            <div class="glass-card rounded-2xl p-8 border border-white/10">
+                <h2 class="text-xl font-600 text-white mb-4">1. Information We Collect</h2>
+                <p>When you use VentureLens AI, we collect the following information:</p>
+                <ul class="list-disc list-inside mt-3 space-y-2">
+                    <li><strong class="text-white/90">Account Information:</strong> Name and email address from your Google account when you sign in.</li>
+                    <li><strong class="text-white/90">Startup Ideas:</strong> The text you submit for analysis.</li>
+                    <li><strong class="text-white/90">Usage Data:</strong> Analysis history and app usage patterns.</li>
+                </ul>
+            </div>
+
+            <div class="glass-card rounded-2xl p-8 border border-white/10">
+                <h2 class="text-xl font-600 text-white mb-4">2. How We Use Your Information</h2>
+                <p>We use your information to:</p>
+                <ul class="list-disc list-inside mt-3 space-y-2">
+                    <li>Provide AI-powered startup analysis</li>
+                    <li>Save your analysis history</li>
+                    <li>Improve our AI models and service quality</li>
+                    <li>Send important service updates</li>
+                </ul>
+            </div>
+
+            <div class="glass-card rounded-2xl p-8 border border-white/10">
+                <h2 class="text-xl font-600 text-white mb-4">3. Data Sharing</h2>
+                <p>We do not sell your personal data. Your startup ideas are processed by:</p>
+                <ul class="list-disc list-inside mt-3 space-y-2">
+                    <li><strong class="text-white/90">Groq API:</strong> For AI analysis (LLaMA 3.3 model)</li>
+                    <li><strong class="text-white/90">Google Trends:</strong> For market trend data</li>
+                </ul>
+                <p class="mt-3">These third parties have their own privacy policies governing data use.</p>
+            </div>
+
+            <div class="glass-card rounded-2xl p-8 border border-white/10">
+                <h2 class="text-xl font-600 text-white mb-4">4. Data Security</h2>
+                <p>Your data is stored securely on Railway's infrastructure with PostgreSQL. We use HTTPS encryption for all data transmission. We retain your data for as long as your account is active.</p>
+            </div>
+
+            <div class="glass-card rounded-2xl p-8 border border-white/10">
+                <h2 class="text-xl font-600 text-white mb-4">5. Your Rights</h2>
+                <p>You have the right to:</p>
+                <ul class="list-disc list-inside mt-3 space-y-2">
+                    <li>Access your personal data</li>
+                    <li>Delete your account and all associated data</li>
+                    <li>Export your analysis history</li>
+                </ul>
+                <p class="mt-3">To exercise these rights, contact us at <span class="text-brand-400">miranggajakti@gmail.com</span></p>
+            </div>
+
+            <div class="glass-card rounded-2xl p-8 border border-white/10">
+                <h2 class="text-xl font-600 text-white mb-4">6. Contact</h2>
+                <p>If you have questions about this Privacy Policy, contact us at:</p>
+                <p class="mt-2 text-brand-400">miranggajakti@gmail.com</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}
