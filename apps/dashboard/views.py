@@ -1,4 +1,4 @@
-"""
+﻿"""
 VentureLens AI - Dashboard Views
 """
 
@@ -6,6 +6,8 @@ import json
 import logging
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DetailView
+from django.views import View
+from django.http import JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
