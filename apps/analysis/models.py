@@ -34,6 +34,8 @@ class StartupAnalysis(models.Model):
     processing_time_seconds = models.FloatField(null=True, blank=True)
     error_message = models.TextField(blank=True)
     feedback = models.CharField(max_length=10, blank=True, choices=[('up', 'Up'), ('down', 'Down')])
+    share_token = models.UUIDField(null=True, blank=True, unique=True)
+    is_public = models.BooleanField(default=False)
 	
     problem_statement = models.TextField(blank=True)
     solution_summary = models.TextField(blank=True)
