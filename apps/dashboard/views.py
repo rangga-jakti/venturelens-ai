@@ -127,3 +127,18 @@ class SharedResultsView(DetailView):
             'threats': analysis.swot_threats,
         }
         return context
+
+
+import uuid as _uuid
+
+class GenerateShareLinkView(LoginRequiredMixin, View):
+    login_url = '/accounts/login/'
+
+    def post(self, request, pk):
+        analysis = get_object_or_404(StartupAnalysis, pk=pk, user=request.user)
+        if not analysis.share_token:
+            analysis.share_token = _uuid.uuid4()
+            analysis.is_public = True
+            analysis.save(update_fields=['share_token', 'is_public'])
+        share_url = request.build_absolute_uri(f'/dashboard/shared/{analysis.share_token}/')
+        return JsonResponse({'status': 'ok', 'url': share_url})
