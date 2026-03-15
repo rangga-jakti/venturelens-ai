@@ -32,32 +32,46 @@
                 <div x-data="{ feedback: '{{ analysis.feedback }}' }" class="flex items-center gap-1">
                     <span class="text-xs text-white/20 mr-1">{% trans "Helpful?" %}</span>
                     <button
-                        @click="feedback = 'up'; fetch('{% url 'analysis:feedback' analysis.pk %}', {method:'POST',headers:{'X-CSRFToken':'{{ csrf_token }}','Content-Type':'application/x-www-form-urlencoded'},body:'feedback=up'})"
+                        @click="
+                            feedback = 'up';
+                            fetch('{% url 'analysis:feedback' analysis.pk %}', {
+                                method: 'POST',
+                                headers: {'X-CSRFToken': '{{ csrf_token }}', 'Content-Type': 'application/x-www-form-urlencoded'},
+                                body: 'feedback=up'
+                            })
+                        "
                         :class="feedback === 'up' ? 'text-emerald-400 bg-emerald-500/20 border-emerald-500/30' : 'text-white/30 bg-white/5 border-white/10 hover:text-emerald-400'"
                         class="p-1.5 rounded-lg border transition-all">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.096l-.483 4A2 2 0 0118.282 18H9.5a2 2 0 01-2-2v-5.5a2 2 0 00-2-2H4"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 10V6a2 2 0 012-2h.5"/></svg>
                     </button>
                     <button
-                        @click="feedback = 'down'; fetch('{% url 'analysis:feedback' analysis.pk %}', {method:'POST',headers:{'X-CSRFToken':'{{ csrf_token }}','Content-Type':'application/x-www-form-urlencoded'},body:'feedback=down'})"
+                        @click="
+                            feedback = 'down';
+                            fetch('{% url 'analysis:feedback' analysis.pk %}', {
+                                method: 'POST',
+                                headers: {'X-CSRFToken': '{{ csrf_token }}', 'Content-Type': 'application/x-www-form-urlencoded'},
+                                body: 'feedback=down'
+                            })
+                        "
                         :class="feedback === 'down' ? 'text-red-400 bg-red-500/20 border-red-500/30' : 'text-white/30 bg-white/5 border-white/10 hover:text-red-400'"
                         class="p-1.5 rounded-lg border transition-all">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14H5.236a2 2 0 01-1.789-2.096l.483-4A2 2 0 015.718 6H14.5a2 2 0 012 2v5.5a2 2 0 002 2H20"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14v4a2 2 0 01-2 2h-.5"/></svg>
                     </button>
                 </div>
-                <button onclick="shareAnalysis('{{ analysis.pk }}')" id="shareBtn" class="btn-ghost text-sm px-4 py-2 flex items-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
-                    {% trans "Share" %}
-                </button>
+
                 <button onclick="window.print()" class="btn-ghost text-sm px-4 py-2 flex items-center gap-2">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                     {% trans "Export PDF" %}
                 </button>
+
                 <style media="print">
                     nav, footer, .btn-primary, .btn-ghost, button { display: none !important; }
                     body { background: white !important; color: black !important; }
                     .glass-card, .card-elevated { background: white !important; border: 1px solid #ddd !important; box-shadow: none !important; }
                     * { color: black !important; }
+                    .text-brand-400, .text-emerald-400, .text-purple-400 { color: #6366f1 !important; }
                 </style>
+
                 <a href="{% url 'analysis:input' %}" class="btn-primary text-sm px-4 py-2">
                     + {% trans "New Analysis" %}
                 </a>
@@ -67,16 +81,26 @@
 
     <!-- ── ROW 1: Score + Radar ────────────────────────────────── -->
     <div class="grid grid-cols-1 lg:grid-cols-5 gap-5 mb-5">
+
+        <!-- Viability Score -->
         {% if score %}
         <div class="lg:col-span-2 card-elevated p-7 flex flex-col items-center justify-center text-center relative">
             <div class="absolute inset-0 bg-gradient-to-br from-brand-500/4 via-transparent to-purple-600/4 rounded-[20px] pointer-events-none"></div>
+
             <div class="section-label w-full justify-center mb-5">{% trans "Viability Score" %}</div>
+
+            <!-- Score Ring -->
             <div class="relative w-40 h-40 mb-6">
+                <!-- Outer glow -->
                 <div class="absolute inset-0 rounded-full opacity-20 blur-xl"
                      style="background: radial-gradient(circle, {% if score.score_color == 'emerald' %}#10b981{% elif score.score_color == 'blue' %}#6366f1{% elif score.score_color == 'yellow' %}#f59e0b{% else %}#ef4444{% endif %}, transparent)"></div>
                 <svg class="w-full h-full -rotate-90" viewBox="0 0 160 160">
                     <circle cx="80" cy="80" r="68" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="8"/>
-                    <circle cx="80" cy="80" r="68" fill="none" stroke="url(#scoreGrad)" stroke-width="8" stroke-linecap="round" id="scoreArc"/>
+                    <circle cx="80" cy="80" r="68" fill="none"
+                        stroke="url(#scoreGrad)"
+                        stroke-width="8"
+                        stroke-linecap="round"
+                        id="scoreArc"/>
                     <defs>
                         <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                             <stop offset="0%" stop-color="#6366f1"/>
@@ -89,6 +113,7 @@
                     <span class="text-xs text-white/30 font-mono mt-1">/100</span>
                 </div>
             </div>
+
             <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-600 mb-4
                 {% if score.score_color == 'emerald' %}bg-emerald-500/10 text-emerald-400 border border-emerald-500/20
                 {% elif score.score_color == 'blue' %}bg-blue-500/10 text-blue-400 border border-blue-500/20
@@ -98,9 +123,12 @@
                 <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
                 {{ score.score_label }}
             </div>
+
             <p class="text-xs text-white/30 leading-relaxed max-w-[220px]">{{ score.score_rationale|truncatechars:130 }}</p>
         </div>
         {% endif %}
+
+        <!-- Radar Chart -->
         <div class="lg:col-span-3 card-elevated p-6">
             <div class="dash-section-header">
                 <h3>{% trans "Dimension Breakdown" %}</h3>
@@ -121,6 +149,7 @@
             <div class="insight-card-title">{% trans "Problem Statement" %}</div>
             <p class="insight-card-body">{{ analysis.problem_statement }}</p>
         </div>
+
         <div class="insight-card">
             <div class="insight-card-icon bg-brand-500/10 text-brand-400 border border-brand-500/15">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
@@ -128,6 +157,7 @@
             <div class="insight-card-title">{% trans "Value Proposition" %}</div>
             <p class="insight-card-body">{{ analysis.value_proposition }}</p>
         </div>
+
         <div class="insight-card">
             <div class="insight-card-icon bg-emerald-500/10 text-emerald-400 border border-emerald-500/15">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
@@ -144,6 +174,7 @@
                 <h3>{% trans "Market Trend Analysis" %}</h3>
             </div>
             <div class="flex items-center gap-2 ml-4 flex-shrink-0">
+                <!-- Time filter buttons -->
                 <div class="flex items-center gap-1 bg-white/3 border border-white/6 rounded-lg p-1">
                     <button @click="switchTimeframe('1M')" :class="activeTimeframe==='1M' ? 'bg-brand-500/20 text-brand-400 border border-brand-500/25' : 'text-white/25 hover:text-white/50 border border-transparent'" class="text-xs font-mono px-2.5 py-1 rounded-md transition-all duration-150">1M</button>
                     <button @click="switchTimeframe('3M')" :class="activeTimeframe==='3M' ? 'bg-brand-500/20 text-brand-400 border border-brand-500/25' : 'text-white/25 hover:text-white/50 border border-transparent'" class="text-xs font-mono px-2.5 py-1 rounded-md transition-all duration-150">3M</button>
@@ -167,6 +198,8 @@
 
     <!-- ── ROW 4: Competitors + Business Models ────────────────── -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
+
+        <!-- Competitors -->
         <div class="card-elevated p-6">
             <div class="dash-section-header">
                 <h3>{% trans "Competitor Landscape" %}</h3>
@@ -177,7 +210,9 @@
                 <div class="competitor-row">
                     <div class="flex items-start justify-between gap-3">
                         <div class="flex items-center gap-3 min-w-0">
-                            <div class="w-7 h-7 rounded-lg bg-white/6 border border-white/8 flex items-center justify-center flex-shrink-0 text-xs font-mono text-white/30">{{ forloop.counter }}</div>
+                            <div class="w-7 h-7 rounded-lg bg-white/6 border border-white/8 flex items-center justify-center flex-shrink-0 text-xs font-mono text-white/30">
+                                {{ forloop.counter }}
+                            </div>
                             <div class="min-w-0">
                                 <p class="text-sm font-600 text-white/85 truncate">{{ comp.name }}</p>
                                 <p class="text-xs text-white/30 mt-0.5 line-clamp-1">{{ comp.description|truncatechars:60 }}</p>
@@ -194,6 +229,8 @@
                 {% endfor %}
             </div>
         </div>
+
+        <!-- Business Models -->
         <div class="card-elevated p-6">
             <div class="dash-section-header">
                 <h3>{% trans "Business Models" %}</h3>
@@ -225,28 +262,52 @@
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="swot-quadrant bg-emerald-500/4 border-emerald-500/15">
-                <div class="swot-header text-emerald-400"><span class="w-5 h-5 rounded bg-emerald-500/15 flex items-center justify-center text-xs">S</span>{% trans "Strengths" %}</div>
-                <ul class="swot-list">{% for item in swot.strengths %}<li>{{ item }}</li>{% endfor %}</ul>
+                <div class="swot-header text-emerald-400">
+                    <span class="w-5 h-5 rounded bg-emerald-500/15 flex items-center justify-center text-xs">S</span>
+                    {% trans "Strengths" %}
+                </div>
+                <ul class="swot-list">
+                    {% for item in swot.strengths %}<li>{{ item }}</li>{% endfor %}
+                </ul>
             </div>
             <div class="swot-quadrant bg-red-500/4 border-red-500/15">
-                <div class="swot-header text-red-400"><span class="w-5 h-5 rounded bg-red-500/15 flex items-center justify-center text-xs">W</span>{% trans "Weaknesses" %}</div>
-                <ul class="swot-list">{% for item in swot.weaknesses %}<li>{{ item }}</li>{% endfor %}</ul>
+                <div class="swot-header text-red-400">
+                    <span class="w-5 h-5 rounded bg-red-500/15 flex items-center justify-center text-xs">W</span>
+                    {% trans "Weaknesses" %}
+                </div>
+                <ul class="swot-list">
+                    {% for item in swot.weaknesses %}<li>{{ item }}</li>{% endfor %}
+                </ul>
             </div>
             <div class="swot-quadrant bg-blue-500/4 border-blue-500/15">
-                <div class="swot-header text-blue-400"><span class="w-5 h-5 rounded bg-blue-500/15 flex items-center justify-center text-xs">O</span>{% trans "Opportunities" %}</div>
-                <ul class="swot-list">{% for item in swot.opportunities %}<li>{{ item }}</li>{% endfor %}</ul>
+                <div class="swot-header text-blue-400">
+                    <span class="w-5 h-5 rounded bg-blue-500/15 flex items-center justify-center text-xs">O</span>
+                    {% trans "Opportunities" %}
+                </div>
+                <ul class="swot-list">
+                    {% for item in swot.opportunities %}<li>{{ item }}</li>{% endfor %}
+                </ul>
             </div>
             <div class="swot-quadrant bg-yellow-500/4 border-yellow-500/15">
-                <div class="swot-header text-yellow-400"><span class="w-5 h-5 rounded bg-yellow-500/15 flex items-center justify-center text-xs">T</span>{% trans "Threats" %}</div>
-                <ul class="swot-list">{% for item in swot.threats %}<li>{{ item }}</li>{% endfor %}</ul>
+                <div class="swot-header text-yellow-400">
+                    <span class="w-5 h-5 rounded bg-yellow-500/15 flex items-center justify-center text-xs">T</span>
+                    {% trans "Threats" %}
+                </div>
+                <ul class="swot-list">
+                    {% for item in swot.threats %}<li>{{ item }}</li>{% endfor %}
+                </ul>
             </div>
         </div>
     </div>
 
     <!-- ── ROW 6: Investor Perspective + AI Recommendation ─────── -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-8">
+
+        <!-- Investor Perspective -->
         <div class="card-elevated p-6">
-            <div class="dash-section-header"><h3>{% trans "Investor Perspective" %}</h3></div>
+            <div class="dash-section-header">
+                <h3>{% trans "Investor Perspective" %}</h3>
+            </div>
             <div class="flex items-center gap-3 mb-4 p-3 rounded-xl border
                 {% if investor_style.color == 'emerald' %}bg-emerald-500/6 border-emerald-500/15
                 {% elif investor_style.color == 'yellow' %}bg-yellow-500/6 border-yellow-500/15
@@ -260,14 +321,20 @@
                 <span class="text-sm font-600
                     {% if investor_style.color == 'emerald' %}text-emerald-400
                     {% elif investor_style.color == 'yellow' %}text-yellow-400
-                    {% else %}text-red-400{% endif %}">{{ investor_style.label }}</span>
+                    {% else %}text-red-400{% endif %}">
+                    {{ investor_style.label }}
+                </span>
             </div>
             <p class="text-sm text-white/45 leading-relaxed">{{ analysis.investor_perspective }}</p>
         </div>
+
+        <!-- AI Recommendation -->
         {% if score.recommendation %}
         <div class="card-elevated p-6 relative overflow-hidden">
             <div class="absolute top-0 right-0 w-48 h-48 bg-brand-500/5 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/2"></div>
-            <div class="dash-section-header"><h3>{% trans "AI Recommendation" %}</h3></div>
+            <div class="dash-section-header">
+                <h3>{% trans "AI Recommendation" %}</h3>
+            </div>
             <div class="flex items-start gap-3">
                 <div class="w-8 h-8 rounded-lg bg-brand-500/15 border border-brand-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
                     <svg class="w-4 h-4 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
@@ -280,8 +347,12 @@
 
     <!-- ── Bottom Actions ──────────────────────────────────────── -->
     <div class="flex flex-col sm:flex-row gap-3 justify-center pt-6 border-t border-white/5">
-        <a href="{% url 'analysis:input' %}" class="btn-primary px-8 py-3 text-sm">{% trans "Analyze Another Idea" %}</a>
-        <a href="{% url 'dashboard:history' %}" class="btn-ghost px-8 py-3 text-sm">{% trans "View History" %}</a>
+        <a href="{% url 'analysis:input' %}" class="btn-primary px-8 py-3 text-sm">
+            {% trans "Analyze Another Idea" %}
+        </a>
+        <a href="{% url 'dashboard:history' %}" class="btn-ghost px-8 py-3 text-sm">
+            {% trans "View History" %}
+        </a>
     </div>
 </div>
 {% endblock %}
@@ -289,10 +360,14 @@
 {% block extra_js %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+
+    // ── Animate score number ───────────────────────────────────
     const targetScore = {{ score.overall_score|default:0 }};
     const scoreEl = document.getElementById('scoreNumber');
     const arc = document.getElementById('scoreArc');
     const circumference = 2 * Math.PI * 68;
+
+    // Animate number count-up
     let current = 0;
     const duration = 1600;
     const start = performance.now();
@@ -304,6 +379,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (progress < 1) requestAnimationFrame(animateScore);
     }
     setTimeout(() => requestAnimationFrame(animateScore), 200);
+
+    // Animate arc
     if (arc) {
         arc.style.strokeDasharray = '0 ' + circumference;
         setTimeout(() => {
@@ -311,6 +388,8 @@ document.addEventListener('DOMContentLoaded', function() {
             arc.style.strokeDasharray = `${(targetScore / 100) * circumference} ${circumference}`;
         }, 300);
     }
+
+    // ── Radar Chart ────────────────────────────────────────────
     const dimData = {{ score_dimensions_json|safe }};
     const radarCtx = document.getElementById('radarChart');
     if (radarCtx && dimData && Object.keys(dimData).length > 0) {
@@ -340,7 +419,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         ticks: { display: false, stepSize: 25 },
                         grid: { color: 'rgba(255,255,255,0.05)' },
                         angleLines: { color: 'rgba(255,255,255,0.05)' },
-                        pointLabels: { color: 'rgba(255,255,255,0.45)', font: { size: 10, family: 'DM Sans', weight: '500' } }
+                        pointLabels: {
+                            color: 'rgba(255,255,255,0.45)',
+                            font: { size: 10, family: 'DM Sans', weight: '500' },
+                        }
                     }
                 },
                 plugins: {
@@ -358,11 +440,16 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // ── Trend Chart (initial render) ───────────────────────────
     const initialTrendData = {{ trend_data_json|safe }};
     const trendCtx = document.getElementById('trendChart');
     window._trendChartInstance = null;
+
     window.renderTrendChart = function(data) {
-        if (window._trendChartInstance) window._trendChartInstance.destroy();
+        if (window._trendChartInstance) {
+            window._trendChartInstance.destroy();
+        }
         if (!trendCtx || !data || !data.labels) return;
         window._trendChartInstance = new Chart(trendCtx, {
             type: 'line',
@@ -372,39 +459,48 @@ document.addEventListener('DOMContentLoaded', function() {
                 animation: { duration: 600 },
                 interaction: { mode: 'index', intersect: false },
                 scales: {
-                    x: { grid: { color: 'rgba(255,255,255,0.03)', drawBorder: false }, ticks: { color: 'rgba(255,255,255,0.25)', font: { size: 9, family: 'JetBrains Mono' }, maxTicksLimit: 10 } },
-                    y: { beginAtZero: true, max: 100, grid: { color: 'rgba(255,255,255,0.03)', drawBorder: false }, ticks: { color: 'rgba(255,255,255,0.25)', font: { size: 9, family: 'JetBrains Mono' }, callback: v => v + '%' } }
+                    x: {
+                        grid: { color: 'rgba(255,255,255,0.03)', drawBorder: false },
+                        ticks: { color: 'rgba(255,255,255,0.25)', font: { size: 9, family: 'JetBrains Mono' }, maxTicksLimit: 10 }
+                    },
+                    y: {
+                        beginAtZero: true, max: 100,
+                        grid: { color: 'rgba(255,255,255,0.03)', drawBorder: false },
+                        ticks: { color: 'rgba(255,255,255,0.25)', font: { size: 9, family: 'JetBrains Mono' }, callback: v => v + '%' }
+                    }
                 },
                 plugins: {
-                    legend: { labels: { color: 'rgba(255,255,255,0.45)', font: { size: 11, family: 'DM Sans' }, usePointStyle: true, pointStyleWidth: 6, boxHeight: 6 } },
-                    tooltip: { backgroundColor: 'rgba(10,14,26,0.95)', borderColor: 'rgba(255,255,255,0.08)', borderWidth: 1, titleColor: 'rgba(255,255,255,0.5)', bodyColor: '#fff', padding: 10 }
+                    legend: {
+                        labels: { color: 'rgba(255,255,255,0.45)', font: { size: 11, family: 'DM Sans' }, usePointStyle: true, pointStyleWidth: 6, boxHeight: 6 }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(10,14,26,0.95)',
+                        borderColor: 'rgba(255,255,255,0.08)',
+                        borderWidth: 1,
+                        titleColor: 'rgba(255,255,255,0.5)',
+                        bodyColor: '#fff',
+                        padding: 10,
+                    }
                 }
             }
         });
     }
+
     renderTrendChart(initialTrendData);
 });
+</script>
 
+<script>
+// Alpine component for trend chart time filter
 function shareAnalysis(pk) {
     fetch(`/dashboard/${pk}/share/`, {
         method: 'POST',
-        headers: {'X-CSRFToken': '{{ csrf_token }}'}
-    }).then(r => r.json()).then(d => {
-        if(d.status === 'ok') {
-            navigator.clipboard.writeText(d.url).then(() => {
-                const btn = document.getElementById('shareBtn');
-                btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Copied!';
-                setTimeout(() => { btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg> Share'; }, 2000);
-            });
-        }
-    });
-}
-
-function trendChartWidget(analysisId) {
+        headers: {'X-CSRFToken': '{
     return {
         activeTimeframe: '{{ analysis.trend_data.timeframe_key|default:"12M" }}',
         isMock: {{ analysis.trend_data.is_mock|yesno:"true,false" }},
         isLoading: false,
+
         async switchTimeframe(tf) {
             if (tf === this.activeTimeframe || this.isLoading) return;
             this.activeTimeframe = tf;
@@ -424,3 +520,4 @@ function trendChartWidget(analysisId) {
 }
 </script>
 {% endblock %}
+
