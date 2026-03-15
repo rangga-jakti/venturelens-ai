@@ -43,7 +43,7 @@ class SharedResultsView(DetailView):
             'opportunities': analysis.swot_opportunities,
             'threats': analysis.swot_threats,
         }
-        return contextimport uuid as _uuid
+        return context
 class GenerateShareLinkView(LoginRequiredMixin, View):
     login_url = '/accounts/login/'
     def post(self, request, pk):
