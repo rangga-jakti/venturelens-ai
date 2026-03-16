@@ -1,4 +1,7 @@
-﻿class GenerateShareLinkView(LoginRequiredMixin, View):
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views import View
+
+class GenerateShareLinkView(LoginRequiredMixin, View):
     login_url = '/accounts/login/'
 
     def post(self, request, pk):
