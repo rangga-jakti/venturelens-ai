@@ -1,3 +1,6 @@
+from django.views.static import serve
+from django.conf import settings
+import os
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
@@ -5,6 +8,8 @@ from django.conf.urls.static import static
 from django.conf.urls.i18n import i18n_patterns
 
 urlpatterns = [
+    path('favicon.ico', serve, {'path': 'favicon.ico', 'document_root': os.path.join(settings.BASE_DIR, 'static')}),
+    path('favicon.png', serve, {'path': 'favicon.png', 'document_root': os.path.join(settings.BASE_DIR, 'static')}),
     path('admin/', admin.site.urls),
     path('i18n/', include('django.conf.urls.i18n')),  # set_language URL
 ]
