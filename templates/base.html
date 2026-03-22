@@ -1,14 +1,10 @@
-﻿{% load i18n %}
+﻿{% load i18n static %}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
 <head>
     <meta charset="utf-8">
-    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
-    <link rel="icon" type="image/png" href="/static/favicon.png">
-    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
- <link rel="icon" type="image/png" href="/static/favicon.png">
-    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
-    <link rel="icon" type="image/png" href="/static/favicon.png">
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+    <link rel="icon" type="image/png" href="{% static 'favicon.png' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}VentureLens AI{% endblock %}</title>
     <meta name="description" content="{% trans 'AI-powered startup idea analyzer. Get instant viability scores, market analysis, competitor insights, and investor perspectives.' %}">
