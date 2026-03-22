@@ -14,7 +14,10 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_SSL_REDIRECT = False
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
-CSRF_TRUSTED_ORIGINS = ['https://web-production-e1166.up.railway.app']
+CSRF_TRUSTED_ORIGINS = [
+    'https://venturelens.up.railway.app',
+    'https://web-production-e1166.up.railway.app',
+]
 
 # Static files
 STATIC_ROOT = BASE_DIR / 'staticfiles'
