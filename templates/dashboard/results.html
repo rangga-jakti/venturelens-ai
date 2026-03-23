@@ -124,7 +124,12 @@
                 {{ score.score_label }}
             </div>
 
-            <p class="text-xs text-white/30 leading-relaxed max-w-[220px]">{{ score.score_rationale|truncatechars:130 }}</p>
+           <div x-data="{expanded: false}" class="max-w-[220px]">
+    <p class="text-xs text-white/30 leading-relaxed" x-text="expanded ? '{{ score.score_rationale|escapejs }}' : '{{ score.score_rationale|truncatechars:130|escapejs }}'"></p>
+    {% if score.score_rationale|length > 130 %}
+    <button @click="expanded = !expanded" class="text-xs text-brand-400/60 hover:text-brand-400 mt-1 transition-colors" x-text="expanded ? '↑ less' : '↓ more'"></button>
+    {% endif %}
+</div>
         </div>
         {% endif %}
 
