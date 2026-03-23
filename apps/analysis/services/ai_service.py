@@ -159,7 +159,7 @@ Return JSON with:
   "trend_keywords": ["keyword1", "keyword2", "keyword3"]
 }}"""
 
-        return self._chat_json(system, prompt, max_tokens=1500)
+        return self._chat_json(system, prompt, max_tokens=4000)
 
     def analyze_competitors(self, startup_idea: str, industry: str, lang: str = 'en') -> list[dict]:
         """
@@ -185,7 +185,7 @@ Return JSON array:
   }}
 ]"""
 
-        result = self._chat_json(system, prompt, max_tokens=1200)
+        result = self._chat_json(system, prompt, max_tokens=2000)
         return result if isinstance(result, list) else result.get('competitors', [])
 
     def generate_business_models(self, startup_idea: str, target_market: str, lang: str = 'en') -> list[dict]:
