@@ -4,6 +4,7 @@ VentureLens AI - Production Settings
 from .base import *  # noqa
 
 DEBUG = False
+LANGUAGE_CODE = 'en-us'
 
 # Security
 SECURE_BROWSER_XSS_FILTER = True
