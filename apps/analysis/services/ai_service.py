@@ -100,7 +100,7 @@ class AIService:
             logger.error(f"AI API error: {e}")
             raise AIServiceError(f"AI service unavailable: {str(e)}")
 
-    def _chat_json(self, system_prompt: str, user_prompt: str, max_tokens: int = 2000) -> dict:
+    def _chat_json(self, system_prompt: str, user_prompt: str, max_tokens: int = 3000) -> dict:
         """Chat that expects JSON response."""
         system = system_prompt + "\n\nIMPORTANT: Respond ONLY with valid JSON. No markdown, no explanation, just the JSON object."
         raw = self._chat(system, user_prompt, max_tokens)
@@ -117,7 +117,18 @@ class AIService:
             return json.loads(raw)
         except json.JSONDecodeError as e:
             logger.error(f"JSON parse error: {e}\nRaw: {raw[:500]}")
-            raise AIServiceError(f"Invalid JSON from AI: {e}")
+            # Try to repair truncated JSON
+            try:
+                import re
+                # Find last complete key-value and close the JSON
+                fixed = raw
+                if not fixed.endswith('}'):
+                    # Remove last incomplete field and close
+                    fixed = re.sub(r',?\s*"[^"]*"\s*:\s*[^,}]*$', '', fixed)
+                    fixed = fixed.rstrip(',') + '}'
+                return json.loads(fixed)
+            except Exception:
+                raise AIServiceError(f"Invalid JSON from AI: {e}")
 
     # ─── Analysis Methods ──────────────────────────────────────────────────────
 
