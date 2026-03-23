@@ -151,11 +151,11 @@ Return JSON with:
 {{
   "industry": "detected industry/sector (1-3 words)",
   "target_market": "specific target audience",
-  "problem_statement": "clear 2-3 sentence problem this solves",
-  "solution_summary": "2-3 sentence description of the solution",
-  "target_market_analysis": "detailed analysis of the market (150 words)",
-  "value_proposition": "unique value this offers over alternatives (100 words)",
-  "scalability_analysis": "how this can scale globally (100 words)",
+  "problem_statement": "problem in 1-2 sentences (max 40 words)",
+  "solution_summary": "solution in 1-2 sentences (max 40 words)",
+  "target_market_analysis": "market analysis (max 60 words)",
+  "value_proposition": "unique value (max 50 words)",
+  "scalability_analysis": "scaling potential (max 50 words)",
   "trend_keywords": ["keyword1", "keyword2", "keyword3"]
 }}"""
 
