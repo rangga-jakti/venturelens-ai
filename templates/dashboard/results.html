@@ -207,21 +207,28 @@
             </div>
             <div class="space-y-2.5">
                 {% for comp in analysis.competitors %}
-                <div class="business-model-row" x-data="{open: false}">
+                <div class="competitor-row" x-data="{open: false}">
                     <button @click="open = !open" class="w-full flex items-start justify-between gap-3 text-left hover:bg-white/3 rounded-lg p-1 -m-1 transition-all">
-                        <p class="text-sm font-600 text-white/85">{{ model.name }}</p>
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="w-7 h-7 rounded-lg bg-white/6 border border-white/8 flex items-center justify-center flex-shrink-0 text-xs font-mono text-white/30">
+                                {{ forloop.counter }}
+                            </div>
+                            <div class="min-w-0">
+                                <p class="text-sm font-600 text-white/85 truncate">{{ comp.name }}</p>
+                                <p class="text-xs text-white/30 mt-0.5" x-show="!open">{{ comp.description|truncatechars:60 }}</p>
+                            </div>
+                        </div>
                         <div class="flex items-center gap-2 flex-shrink-0">
-                            <span class="text-xs font-mono px-2 py-0.5 rounded-md border
-                                {% if model.revenue_potential == 'Very High' or model.revenue_potential == 'High' %}bg-emerald-500/8 text-emerald-400 border-emerald-500/15
-                                {% elif model.revenue_potential == 'Medium' %}bg-blue-500/8 text-blue-400 border-blue-500/15
-                                {% else %}bg-white/4 text-white/30 border-white/8{% endif %}">
-                                {{ model.revenue_potential }}
+                            <span class="text-xs font-mono px-2 py-0.5 rounded-md border bg-white/4 text-white/30 border-white/8">
+                                {{ comp.similarity|default:comp.threat_level|default:"—" }}
                             </span>
-                            <svg class="w-3 h-3 text-white/30 transition-transform" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            <svg class="w-3 h-3 text-white/30 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                         </div>
                     </button>
-                    <div x-show="open" x-transition class="mt-2 text-xs text-white/50 leading-relaxed">
-                        {{ model.description }}
+                    <div x-show="open" x-transition class="mt-2 pl-10 space-y-1">
+                        <p class="text-xs text-white/50 leading-relaxed">{{ comp.description }}</p>
+                        {% if comp.strength %}<p class="text-xs text-emerald-400/70 mt-1">✓ {{ comp.strength }}</p>{% endif %}
+                        {% if comp.weakness %}<p class="text-xs text-red-400/70 mt-1">✗ {{ comp.weakness }}</p>{% endif %}
                     </div>
                 </div>
                 {% endfor %}
@@ -236,17 +243,22 @@
             </div>
             <div class="space-y-2.5">
                 {% for model in analysis.business_models %}
-                <div class="business-model-row">
-                    <div class="flex items-start justify-between gap-3 mb-1.5">
+                <div class="business-model-row" x-data="{open: false}">
+                    <button @click="open = !open" class="w-full flex items-start justify-between gap-3 text-left hover:bg-white/3 rounded-lg p-1 -m-1 transition-all">
                         <p class="text-sm font-600 text-white/85">{{ model.name }}</p>
-                        <span class="flex-shrink-0 text-xs font-mono px-2 py-0.5 rounded-md border
-                            {% if model.revenue_potential == 'Very High' or model.revenue_potential == 'High' %}bg-emerald-500/8 text-emerald-400 border-emerald-500/15
-                            {% elif model.revenue_potential == 'Medium' %}bg-blue-500/8 text-blue-400 border-blue-500/15
-                            {% else %}bg-white/4 text-white/30 border-white/8{% endif %}">
-                            {{ model.revenue_potential }}
-                        </span>
+                        <div class="flex items-center gap-2 flex-shrink-0">
+                            <span class="text-xs font-mono px-2 py-0.5 rounded-md border
+                                {% if model.revenue_potential == 'Very High' or model.revenue_potential == 'High' %}bg-emerald-500/8 text-emerald-400 border-emerald-500/15
+                                {% elif model.revenue_potential == 'Medium' %}bg-blue-500/8 text-blue-400 border-blue-500/15
+                                {% else %}bg-white/4 text-white/30 border-white/8{% endif %}">
+                                {{ model.revenue_potential }}
+                            </span>
+                            <svg class="w-3 h-3 text-white/30 transition-transform duration-200" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </div>
+                    </button>
+                    <div x-show="open" x-transition class="mt-2 text-xs text-white/50 leading-relaxed">
+                        {{ model.description }}
                     </div>
-                    <p class="text-xs text-white/30 leading-relaxed">{{ model.description|truncatechars:90 }}</p>
                 </div>
                 {% endfor %}
             </div>
